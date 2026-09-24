@@ -3,6 +3,19 @@
 144 posts archived from <https://blog.codeleak.pl> as Markdown with local images.
 
 
+## Blog template
+
+[`template/`](template/) holds the Blogger theme ("The Record") the blog uses since it was archived:
+
+- `src/` – `skeleton.xml`, `theme.css`, `archive.js` (plus `template.old.xml`, the previous theme)
+- `build.py` – assembles `codeleak-the-record.xml` (paste into Blogger → Theme → Edit HTML) and static previews
+- `data/feed.json` – feed snapshot used for the previews; `preview/` – rendered `home.html` / `post.html`
+
+```bash
+cd template && python3 build.py data/feed.json
+python3 -m http.server 8765 --directory preview
+```
+
 ## 2026
 
 - 2026-09-24 [Codeleak.pl Archived](posts/2026/09/codeleakpl-archived/index.md)

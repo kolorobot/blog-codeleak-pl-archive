@@ -1,0 +1,1233 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>blog.codeleak.pl — preview</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>/* ==========================================================================
+   codeleak — The Record
+   A Blogger theme for blog.codeleak.pl as a public technical record, 2011–2023.
+   Built on top of the Contempo (indie) runtime: class hooks used by the
+   Blogger/indie scripts are kept, the look is entirely new.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root{
+  --paper:#f3efe6;
+  --paper-2:#ebe6da;
+  --card:#fcfbf7;
+  --aged:#ecd9ae;
+  --ink:#17171b;
+  --ink-2:#34343b;
+  --ink-3:#6f6c64;
+  --ink-4:#9d998f;
+  --rule:#d8d1c1;
+  --rule-2:#e5dfd2;
+  --accent:#cf2a3c;
+  --accent-soft:rgba(207,42,60,.08);
+  --code-bg:#18191d;
+  --code-bar:#212227;
+  --code-ink:#e9e4d9;
+  --code-dim:#8d897f;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --rail:300px;
+  --col:880px;
+  --measure:700px;
+  --shadow:0 1px 0 rgba(60,45,20,.04),0 18px 40px -24px rgba(60,45,20,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#111113;
+    --paper-2:#17171a;
+    --card:#1a1a1d;
+    --aged:#4a3b1c;
+    --ink:#efebe2;
+    --ink-2:#cdc8be;
+    --ink-3:#8f8b82;
+    --ink-4:#67645d;
+    --rule:#2f2e32;
+    --rule-2:#242327;
+    --accent:#ff5d68;
+    --accent-soft:rgba(255,93,104,.1);
+    --code-bg:#0c0c0e;
+    --code-bar:#151518;
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 18px 40px -24px rgba(0,0,0,.8);
+  }
+}
+
+/* ---------- 2. Reset & base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;
+  background:var(--paper);color:var(--ink-2);
+  font:400 18px/1.7 var(--serif);
+  font-optical-sizing:auto;
+  overflow-wrap:break-word;word-wrap:break-word;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;border:0}
+a{color:var(--ink);text-decoration:none}
+a:hover{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit;margin:0}
+button{cursor:pointer}
+h1,h2,h3,h4{color:var(--ink);line-height:1.2}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- 3. Blogger / indie runtime hooks (functional) ---------- */
+.hidden{display:none!important}
+.invisible{visibility:hidden}
+.container::after,.float-container::after{clear:both;content:'';display:table}
+.clearboth{clear:both}
+.item-control{display:none}
+.BLOG_mobile_video_class{display:none}
+body .CSS_LIGHTBOX{z-index:900}
+.bg-photo-container,.bg-photo,.bg-photo-overlay{display:none}
+#cookieChoiceInfo{bottom:0;top:auto}
+iframe.b-hbp-video{border:0}
+.main-heading{position:absolute;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}
+.skip-navigation{
+  background:var(--ink);color:var(--paper);display:block;height:0;left:0;right:0;top:0;
+  line-height:48px;overflow:hidden;position:fixed;text-align:center;z-index:900;
+  font:500 13px var(--mono);transition:height .2s;
+}
+.skip-navigation:focus{height:48px;color:var(--paper)}
+#main{outline:0}
+.dim-overlay{background-color:rgba(10,10,12,.5);height:100vh;left:0;position:fixed;top:0;width:100%;z-index:100}
+#sharing-dim-overlay,#overflowable-dim-overlay,.search .dim-overlay{background:transparent}
+input::-ms-clear{display:none}
+body.sidebar-visible{overflow-y:hidden}
+.b-notification{color:var(--ink);background:var(--card);border-bottom:1px solid var(--rule);padding:16px 32px;text-align:center}
+.b-notification.visible{transition:margin-top .3s cubic-bezier(.4,0,.2,1)}
+.b-notification.invisible{position:absolute}
+.b-notification-close{position:absolute;right:8px;top:8px}
+.no-posts-message{line-height:40px;text-align:center;font-family:var(--mono);font-size:13px}
+
+/* icons */
+.svg-icon-24,.svg-icon-24-button{cursor:pointer;height:24px;width:24px;min-width:24px;fill:var(--ink-3)}
+.svg-icon-24-button,.touch-icon-button{background:0 0;border:0;margin:0;outline:0;padding:0}
+.flat-icon-button{background:0 0;border:0;margin:-8px;padding:8px;cursor:pointer;box-sizing:content-box;display:inline-block;line-height:0;border-radius:50%}
+.flat-icon-button:hover{background:var(--accent-soft)}
+.flat-icon-button:hover .svg-icon-24{fill:var(--accent)}
+.touch-icon{margin:-12px;padding:12px}
+svg:not(:root).touch-icon{overflow:visible}
+html[dir=rtl] .rtl-reversible-icon{transform:scaleX(-1)}
+.blogger-logo,.svg-icon-24.blogger-logo{fill:#ff9800;opacity:1}
+.ripple{position:relative}
+.ripple>*{z-index:1}
+.splash-wrapper{display:none}
+
+/* loading spinner (threaded comments) */
+.loading-spinner-large{animation:cl-spin 1.2s infinite linear;height:32px;width:32px;position:absolute;z-index:200;border:2px solid var(--rule);border-top-color:var(--accent);border-radius:50%}
+.loading-spinner-large>div{display:none}
+@keyframes cl-spin{to{transform:rotate(360deg)}}
+
+/* collapsible <details> (Archive / Labels) */
+.collapsible,.collapsible>summary{display:block;overflow:hidden}
+.collapsible>:not(summary){display:none}
+.collapsible[open]>:not(summary){display:block}
+.collapsible:focus,.collapsible>summary:focus{outline:0}
+.collapsible>summary{cursor:pointer;display:block;padding:0;list-style:none}
+.collapsible>summary::-webkit-details-marker{display:none}
+.collapsible-title{display:flex;align-items:center}
+.collapsible-title .title{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.collapsible-title .chevron-down,.collapsible[open] .collapsible-title .chevron-up{display:block}
+.collapsible-title .chevron-up,.collapsible[open] .collapsible-title .chevron-down{display:none}
+.collapsible-title svg{width:18px;height:18px;fill:var(--ink-4)}
+
+/* extendable lists ("show more") */
+.extendable .remaining-items{height:0;overflow:hidden;transition:height .3s cubic-bezier(.4,0,.2,1)}
+.extendable .remaining-items.expanded{height:auto}
+.extendable .show-less,.extendable .show-more{margin-top:12px}
+.extendable .show-less.hidden,.extendable .show-more.hidden{display:none}
+.pill-button{
+  background:0 0;border:1px solid var(--rule);border-radius:999px;cursor:pointer;display:inline-block;
+  padding:5px 14px;text-transform:uppercase;font:500 11px/1.4 var(--mono);letter-spacing:.08em;color:var(--ink-3);
+}
+.pill-button:hover{border-color:var(--accent);color:var(--accent)}
+.flat-button{cursor:pointer;display:inline-block}
+
+/* page list overflow */
+.overflowable-container{max-height:44px;overflow:hidden;position:relative}
+.overflow-button{cursor:pointer}
+.overflow-popup{
+  background:var(--card);border:1px solid var(--rule);box-shadow:var(--shadow);border-radius:10px;
+  left:0;max-width:calc(100% - 32px);position:absolute;top:0;visibility:hidden;z-index:101;padding:6px 0
+}
+.overflow-popup ul{list-style:none;margin:0;padding:0}
+.overflow-popup .tabs li,.overflow-popup li{display:block;height:auto}
+.overflow-popup li a{color:var(--ink-2);display:block;padding:8px 20px;font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.overflow-popup li.selected a{color:var(--accent)}
+.overflow-button.hidden,.overflow-popup .tabs li.hidden,.overflow-popup li.hidden{display:none}
+
+/* snippets (truncated by the indie script) */
+.snippet-container{margin:0;position:relative;overflow:hidden}
+.snippet-fade{bottom:0;box-sizing:border-box;position:absolute;width:96px;right:0;height:1.6em;color:var(--ink-3)}
+.snippet-fade::after{content:'\2026';float:right}
+.post-snippet .snippet-fade{background:linear-gradient(to left,var(--paper) 0,var(--paper) 25%,rgba(0,0,0,0) 100%)}
+
+/* dialogs & subscribe */
+.dialog{
+  box-shadow:var(--shadow);background:var(--card);color:var(--ink-2);border:1px solid var(--rule);border-radius:14px;
+  padding:30px;position:fixed;text-align:center;width:calc(100% - 24px);z-index:101
+}
+.dialog input[type=email],.dialog input[type=text]{
+  background:transparent;border:0;border-bottom:1px solid var(--rule);color:var(--ink);display:block;font:16px/24px var(--mono);
+  margin:auto;padding-bottom:7px;outline:0;text-align:center;width:100%
+}
+.dialog input[type=email]:focus,.dialog input[type=text]:focus{border-bottom:2px solid var(--accent);padding-bottom:6px}
+.dialog .goog-buttonset-default{color:var(--accent)}
+.subscribe-popup{max-width:364px}
+.subscribe-popup h3{color:var(--ink);font-size:1.6em;margin-top:0}
+.subscribe-popup .FollowByEmail h3{display:none}
+.subscribe-popup .FollowByEmail .follow-by-email-submit{background:0 0;border:0;color:var(--accent);cursor:pointer;display:inline-block;margin:24px auto 0;font:700 13px var(--mono);text-transform:uppercase}
+.subscribe-section-container{margin:0}
+.subscribe-button{border-color:var(--rule);color:var(--ink-3)}
+.link-copied-dialog{max-width:520px;outline:0}
+.link-copied-dialog .modal-dialog-buttons{margin-top:8px}
+.link-copied-dialog .goog-buttonset-default{background:0 0;border:0}
+
+/* sharing popup */
+.post-share-buttons{position:relative}
+.widget.Sharing .sharing-button{display:none}
+.sharing-button{background:0 0;border:0;margin:0;outline:0;padding:0;cursor:pointer}
+.sharing-open.touch-icon-button:active .touch-icon,.sharing-open.touch-icon-button:focus .touch-icon{background-color:transparent}
+.share-buttons{
+  background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);
+  list-style:none;margin:0;padding:6px 0;position:absolute;top:-8px;right:-8px;min-width:210px;z-index:101
+}
+.share-buttons.hidden{display:none}
+.share-buttons li{margin:0;height:44px}
+.share-buttons li .sharing-platform-button{box-sizing:border-box;cursor:pointer;display:block;height:100%;margin-bottom:0;padding:0 16px;position:relative;width:100%}
+.share-buttons li .sharing-platform-button:focus,.share-buttons li .sharing-platform-button:hover{background:var(--accent-soft);outline:0}
+.share-buttons li svg[class*=" sharing-"],.share-buttons li svg[class^=sharing-]{position:absolute;top:10px;fill:var(--ink-2)}
+.share-buttons li .platform-sharing-text{display:block;font:500 13px/44px var(--mono);white-space:nowrap;margin-left:44px}
+.share-buttons .svg-icon-24{fill:var(--ink-2)}
+
+/* search (indie expands it on small screens) */
+.search{display:flex;line-height:24px;position:relative;z-index:101}
+.search h3{display:none}
+.search form{display:flex;flex:1 0 0;align-items:center}
+.search form>*{display:none}
+.search.focused form>*{display:block}
+.search .search-input label{display:none}
+.search-expand{flex:0 0 auto}
+.search-expand-text{display:none}
+.search-input{flex:1 0 1px}
+.search-input input{
+  background:transparent;border:0;outline:0;display:block;width:100%;height:38px;padding:0;
+  color:var(--ink);font:400 14px/38px var(--mono)
+}
+.search-input input::placeholder{color:var(--ink-4);opacity:1}
+.search-action{
+  background:0 0;border:0;cursor:pointer;color:var(--ink-3);height:38px;padding:0 4px 0 10px;
+  font:500 11px/38px var(--mono);text-transform:uppercase;letter-spacing:.1em
+}
+.search-action:hover{color:var(--accent)}
+.search.focused .search-action:disabled{opacity:.35}
+
+/* sidebar drawer mechanics */
+.sidebar-container{
+  background:var(--paper-2);width:var(--rail);max-width:86vw;overflow-y:auto;z-index:101;
+  -webkit-overflow-scrolling:touch;transition:transform .3s cubic-bezier(0,0,.2,1)
+}
+.sidebar-container .navigation{line-height:0;padding:16px 20px}
+.sidebar-container .sidebar-back{cursor:pointer}
+
+/* sticky (collapsed) header managed by indie */
+.centered-top-placeholder{display:none}
+.collapsed-header .centered-top-placeholder{display:block}
+.centered-top-container.sticky{
+  left:0;right:0;top:0;width:auto;position:fixed;z-index:50;
+  background:var(--paper);border-bottom:1px solid var(--rule);
+  transition-property:transform,opacity;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.2,1)
+}
+.centered-top-container .Header .replaced h1,.centered-top-placeholder .Header .replaced h1{display:none}
+.centered-top-container.sticky .Header .replaced h1{display:block}
+.centered-top-container.sticky .Header .header-widget{background:0 0}
+.centered-top-container.sticky .Header .header-image-wrapper{display:none}
+.centered-top-container img,.centered-top-placeholder img{max-width:100%}
+
+/* ads (kept, but quiet) */
+.inline-ad{display:none;max-width:100%;overflow:hidden;margin-bottom:16px}
+.desktop-ad .inline-ad{display:block}
+.adsbygoogle{display:block;overflow:hidden}
+.vertical-ad-container{display:none}
+.inline-ad-placeholder,.vertical-ad-placeholder{background:var(--card);border:1px dashed var(--rule);text-align:center;font:500 12px var(--mono);color:var(--ink-3)}
+.vertical-ad-placeholder{height:600px}
+.inline-ad-placeholder{height:90px}
+
+/* ---------- 4. Archive status bar ---------- */
+.cl-status{
+  background:var(--ink);color:var(--paper);
+  font:500 11.5px/1 var(--mono);letter-spacing:.04em;
+  position:relative;z-index:60;
+}
+.cl-status-in{display:flex;align-items:center;gap:10px;height:34px;padding:0 20px;white-space:nowrap;overflow:hidden}
+.cl-status strong{font-weight:700;text-transform:uppercase;letter-spacing:.14em}
+.cl-status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(207,42,60,.28);flex:none}
+.cl-status-sep{opacity:.4}
+.cl-status-text{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.cl-status-meta{margin-left:auto;opacity:.6;flex:none}
+@media (max-width:760px){.cl-status-meta{display:none}.cl-status-in{padding:0 16px}}
+@media (prefers-color-scheme:dark){.cl-status{background:#000;color:var(--ink)}}
+
+/* ---------- 5. Shell: rail + page ---------- */
+.cl-shell{position:relative}
+.page_body{position:relative;z-index:20}
+.page_body .centered{
+  display:flex;flex-direction:column;min-height:calc(100vh - 34px);
+  max-width:calc(var(--col) + 64px);margin:0 auto;padding:0 32px
+}
+.page_body .centered>*{flex:0 0 auto}
+.page_body .centered>.cl-foot{margin-top:auto}
+.cl-body{padding-bottom:72px}
+.page_body .widget{margin-bottom:0}
+
+@media (min-width:1200px){
+  .cl-shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr)}
+  .cl-shell>.page{grid-column:2;grid-row:1;min-width:0}
+  .cl-shell>.sidebar-container{
+    grid-column:1;grid-row:1;position:sticky;top:0;align-self:start;
+    height:100vh;max-width:none;border-right:1px solid var(--rule);transform:none
+  }
+  .sidebar-container .navigation{display:none}
+  .hamburger-menu{display:none!important}
+  .centered-top-container.sticky{left:var(--rail)}
+}
+@media (max-width:1199.98px){
+  .sidebar-container{position:fixed;top:0;bottom:0;left:0;box-shadow:0 0 40px rgba(0,0,0,.25)}
+  .sidebar-container.sidebar-invisible{transform:translateX(-110%);box-shadow:none;transition-timing-function:cubic-bezier(.4,0,.6,1)}
+}
+
+/* ---------- 6. Header ---------- */
+.centered-top-container{padding:0}
+.centered-top{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  min-height:76px;padding:14px 0;border-bottom:1px solid var(--rule);position:relative
+}
+.centered-top>.clearboth{display:none}
+.hamburger-menu,.return_link{order:0;flex:none;display:inline-flex}
+.return_link .svg-icon-24,.hamburger-menu .svg-icon-24{fill:var(--ink)}
+.blog-name{order:1;flex:1 1 auto;display:flex;align-items:center;gap:8px 28px;flex-wrap:wrap;min-width:0}
+.blog-name .section,.blog-name .widget{margin:0}
+.search{order:2;flex:none}
+
+.Header h1{margin:0;font:600 23px/1.1 var(--serif);letter-spacing:-.01em;white-space:nowrap;color:var(--ink);display:flex;align-items:center;gap:10px}
+.Header h1::before{content:'';width:11px;height:11px;background:var(--accent);flex:none;transform:translateY(1px)}
+.Header h1 a{color:var(--ink)}
+.Header h1 a:hover{color:var(--ink)}
+.Header p{margin:3px 0 0 21px;font:400 12px/1.3 var(--mono);color:var(--ink-3)}
+.header-widget{display:block}
+
+.blog-name nav{display:block}
+.PageList .widget-content{display:block}
+.tabs{list-style:none;margin:0;padding:0;display:flex;gap:4px}
+.tabs li{display:inline-block;margin:0}
+.tabs li a,.tabs .overflow-button a{
+  display:inline-block;padding:8px 10px;border-radius:999px;
+  font:500 11.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)
+}
+.tabs li a:hover{color:var(--ink);background:var(--rule-2)}
+.tabs .selected{border:0}
+.tabs .selected a{color:var(--ink);background:var(--rule-2)}
+.PageList h3.title{display:none}
+
+/* search: always-open field on wide screens */
+@media (min-width:800px){
+  .search-expand{display:none}
+  .search form>*{display:block}
+  .search{width:260px;transition:width .3s}
+  .search form{border:1px solid var(--rule);border-radius:999px;background:var(--card);padding:0 8px 0 16px;height:40px}
+  .search form:focus-within{border-color:var(--ink-3)}
+  .search.focused,.search:focus-within{width:320px}
+}
+@media (max-width:799.98px){
+  .centered-top{gap:14px;min-height:64px}
+  .Header h1{font-size:20px}
+  .Header p{display:none}
+  .blog-name nav{display:none}
+  .search{margin-left:auto}
+  .search.focused{position:absolute;inset:10px 0;background:var(--paper);width:auto;align-items:center;gap:12px}
+  .search.focused form{border-bottom:1px solid var(--ink);flex:1}
+  .search-focused .blog-name{visibility:hidden}
+}
+
+/* sticky variant */
+.sticky .centered-top{max-width:calc(var(--col) + 64px);margin:0 auto;padding:8px 32px;min-height:56px;border-bottom:0}
+.sticky .Header p,.sticky .blog-name nav,.sticky .subscribe-section-container{display:none}
+.sticky .Header h1{font-size:19px}
+@media (max-width:799.98px){.sticky .centered-top{padding:8px 16px}}
+
+/* ---------- 7. Kicker / shared type ---------- */
+.cl-kicker{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
+  font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3)
+}
+.cl-kicker::before{content:'';width:22px;height:1px;background:currentColor;opacity:.6}
+
+/* ---------- 8. Home hero ---------- */
+.cl-hero{padding:64px 0 40px;border-bottom:1px solid var(--rule)}
+.cl-hero-title{
+  margin:0 0 22px;max-width:21ch;
+  font:500 clamp(34px,5.4vw,60px)/1.04 var(--serif);letter-spacing:-.025em;color:var(--ink)
+}
+.cl-hero-title em{font-style:italic;font-weight:400;color:var(--ink-3)}
+.cl-hero-lede{margin:0 0 40px;max-width:60ch;font-size:19px;line-height:1.6;color:var(--ink-2)}
+.cl-hero-lede b{color:var(--ink);font-weight:600}
+
+.cl-facts{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:4px 0 0;border-top:1px solid var(--rule)}
+.cl-facts>div{padding:12px 16px 0 0}
+.cl-facts>div+div{padding-left:16px;border-left:1px solid var(--rule)}
+.cl-facts dt{font:500 10.5px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-4);margin-bottom:4px}
+.cl-facts dd{margin:0;font:500 17px/1.2 var(--serif);color:var(--ink)}
+.cl-facts dd.cl-closed{color:var(--accent)}
+
+/* year histogram */
+.cl-tl-wrap{position:relative}
+.cl-tl-caption{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-4)}
+.cl-tl{
+  list-style:none;margin:0;padding:0;height:150px;
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;align-items:end;
+  border-bottom:1px solid var(--ink)
+}
+.cl-tl li{height:100%;margin:0;position:relative}
+.cl-tl a,.cl-tl .cl-tl-cell{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;color:var(--ink-3)}
+.cl-tl-n{font:500 11px/1 var(--mono);margin-bottom:6px;color:var(--ink-3);transition:color .15s}
+.cl-tl-bar{
+  display:block;width:100%;height:calc(var(--h,0) * 118px);min-height:2px;
+  background:var(--ink);border-radius:3px 3px 0 0;transition:background .15s,transform .15s;transform-origin:bottom
+}
+.cl-tl a:hover .cl-tl-bar{background:var(--accent)}
+.cl-tl a:hover .cl-tl-n{color:var(--accent)}
+.cl-tl .is-empty .cl-tl-bar{background:transparent;border:1px dashed var(--ink-4);border-bottom:0;height:10px}
+.cl-tl .is-empty .cl-tl-n{color:var(--ink-4)}
+.cl-tl .is-last .cl-tl-bar{background:var(--accent)}
+.cl-tl-lbl{position:absolute;top:100%;left:0;right:0;text-align:center;padding-top:8px;font:500 10.5px/1 var(--mono);color:var(--ink-4)}
+.cl-tl .is-last .cl-tl-lbl{color:var(--accent)}
+.cl-tl-lbls-gap{height:28px}
+
+@media (max-width:640px){
+  .cl-hero{padding:40px 0 32px}
+  .cl-hero-lede{font-size:17px}
+  .cl-tl{height:120px;gap:3px}
+  .cl-tl-bar{height:calc(var(--h,0) * 92px)}
+  .cl-tl-n{font-size:9px}
+  .cl-tl-lbl{font-size:9px}
+  .cl-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cl-facts>div:nth-child(3){padding-left:0;border-left:0}
+  .cl-facts>div:nth-child(n+3){margin-top:14px;border-top:1px solid var(--rule);padding-top:12px}
+}
+
+/* ---------- 9. Filter / query bar (label, search, archive views) ---------- */
+.post-filter-message{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin:40px 0 8px;padding:14px 18px;border:1px solid var(--rule);border-radius:12px;background:var(--card);
+  font:400 13.5px/1.5 var(--mono);color:var(--ink-2)
+}
+.post-filter-message>div:first-child::before{content:'query \203A  ';color:var(--accent);font-weight:700}
+.post-filter-message .search-label,.post-filter-message .search-query{font-weight:700;color:var(--ink)}
+.post-filter-message a{white-space:nowrap;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+.post-filter-message a:hover{color:var(--accent)}
+
+/* ---------- 10. Final entry (FeaturedPost) ---------- */
+#page_body .FeaturedPost{margin:48px 0 8px}
+.FeaturedPost .widget-content{position:relative}
+.cl-final{
+  position:relative;background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--accent);
+  border-radius:4px 4px 14px 14px;padding:34px 40px 30px;box-shadow:var(--shadow)
+}
+.cl-final .cl-kicker{color:var(--accent)}
+.cl-final .cl-kicker .cl-recid,.cl-final .cl-kicker .cl-date{color:var(--ink-3)}
+.FeaturedPost .post-title{margin:0 0 14px;font:500 clamp(28px,3.6vw,38px)/1.12 var(--serif);letter-spacing:-.02em}
+.FeaturedPost .post-title a{color:var(--ink)}
+.FeaturedPost .post-title a:hover{color:var(--accent)}
+.FeaturedPost .post-snippet.snippet-container{max-height:calc(1.65em * 3);font-size:17.5px;line-height:1.65;color:var(--ink-2);margin:0 0 18px}
+.FeaturedPost .post-snippet .snippet-fade{background:linear-gradient(to left,var(--card) 0,var(--card) 25%,rgba(0,0,0,0) 100%);height:1.65em}
+.FeaturedPost .snippet-thumbnail{margin:0 0 20px;border-radius:10px;overflow:hidden}
+.FeaturedPost .snippet-thumbnail img{width:100%;display:block}
+
+/* ---------- 11. Ledger (post list) ---------- */
+.Blog .blog-posts{margin:0}
+.cl-yearmark{
+  display:flex;align-items:center;gap:16px;margin:44px 0 0;
+  font:500 12px/1 var(--mono);letter-spacing:.2em;color:var(--ink-4)
+}
+.cl-yearmark::after{content:'';flex:1;height:1px;background:var(--rule)}
+.cl-yearmark b{font:600 26px/1 var(--serif);letter-spacing:-.01em;color:var(--ink)}
+body:not(.item-view) .Blog .post-outer-container{padding:0;margin:0;background:transparent}
+.cl-entry{display:grid;grid-template-columns:150px minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--rule-2)}
+.cl-entry-meta{display:flex;flex-direction:column;gap:5px;padding-top:6px;font:500 11.5px/1.3 var(--mono);color:var(--ink-3)}
+.cl-entry-meta .cl-recid{color:var(--ink);font-weight:700;letter-spacing:.02em}
+.cl-entry-meta .cl-ago{color:var(--ink-4)}
+.cl-entry .post-title{margin:0 0 10px;font:500 26px/1.18 var(--serif);letter-spacing:-.015em}
+.cl-entry .post-title a{color:var(--ink);background:linear-gradient(var(--accent),var(--accent)) 0 100%/0 1px no-repeat;transition:background-size .25s}
+.cl-entry .post-title a:hover{color:var(--ink);background-size:100% 1px}
+.cl-entry .post-body{margin:0;color:var(--ink-2);font-size:16.5px;line-height:1.65}
+.post-snippet.snippet-container{max-height:calc(1.65em * 3)}
+.post-snippet .snippet-item{line-height:1.65}
+
+.jump-link{margin-top:14px}
+.jump-link a{font:500 11.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);display:inline-flex;align-items:center;gap:8px}
+.jump-link a::after{content:'\2192';transition:transform .2s}
+.jump-link a:hover{color:var(--accent)}
+.jump-link a:hover::after{transform:translateX(4px)}
+
+@media (max-width:640px){
+  .page_body .centered{padding:0 16px}
+  .cl-entry{grid-template-columns:1fr;gap:10px;padding:22px 0}
+  .cl-entry-meta{flex-direction:row;flex-wrap:wrap;gap:4px 12px;padding:0}
+  .cl-entry .post-title{font-size:22px}
+  .cl-final{padding:26px 20px 22px}
+}
+
+/* pager */
+#blog-pager{display:flex;justify-content:space-between;gap:12px;margin:40px 0;text-align:left}
+#blog-pager a,.cl-recnav a{
+  display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border:1px solid var(--rule);border-radius:999px;background:var(--card);
+  font:500 11.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)
+}
+#blog-pager a:hover,.cl-recnav a:hover{border-color:var(--accent);color:var(--accent)}
+#blog-pager .blog-pager-older-link,.cl-recnav .cl-older{margin-left:auto}
+
+/* ---------- 12. The record (single post) ---------- */
+.item-view .page_body .centered{max-width:calc(var(--measure) + 200px)}
+.item-view .Blog .post-outer-container{
+  position:relative;margin:40px 0 0;padding:44px 56px 40px;
+  background:var(--card);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow)
+}
+/* patina: older records are printed on slightly more yellowed paper */
+.item-view .Blog .post-outer-container::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 0%,transparent 40%,var(--aged) 140%),var(--aged);
+  opacity:calc(var(--age,0) * .42)
+}
+.item-view .Blog .post-outer-container>*{position:relative}
+
+.cl-record{position:relative;margin:0 0 34px;padding:0 0 18px;border-bottom:1px solid var(--rule)}
+.cl-record-grid{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:0;margin:0;border-top:2px solid var(--ink)}
+.cl-record-grid>div{padding:10px 26px 0 0}
+.cl-record-grid>div+div{padding-left:18px;border-left:1px solid var(--rule)}
+.cl-record-grid dt{font:500 10px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-4);margin-bottom:3px}
+.cl-record-grid dd{margin:0;font:500 13px/1.4 var(--mono);color:var(--ink);white-space:nowrap}
+.cl-record-grid .cl-recid{font-weight:700}
+.cl-span{display:flex;align-items:center;gap:12px;margin-top:16px;font:500 10.5px/1 var(--mono);color:var(--ink-4)}
+.cl-span i{position:relative;flex:1;height:1px;background:var(--rule)}
+.cl-span i::before{content:'';position:absolute;left:0;top:0;height:1px;width:calc(var(--pos,1) * 100%);background:var(--ink-3)}
+.cl-span i b{
+  position:absolute;top:50%;left:calc(var(--pos,1) * 100%);width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)
+}
+.cl-span i b::after{
+  content:attr(data-label);position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;font:600 10px/1 var(--mono);color:var(--accent);letter-spacing:.06em
+}
+.cl-epilogue .cl-span i b::after{left:auto;right:-4px;transform:none}
+
+.item-view .post-title{margin:0 0 14px;font:500 clamp(32px,4.6vw,48px)/1.08 var(--serif);letter-spacing:-.025em;color:var(--ink)}
+.item-view .post-header{font:400 12.5px/1.4 var(--mono);color:var(--ink-3)}
+.post-header .byline{display:inline-block}
+.post-author-label{color:var(--ink-4)}
+.post-author a,.post-author a:hover{color:var(--ink-2)}
+.post-share-buttons-top{float:right;margin:-2px 0 0 12px}
+.byline.post-share-buttons{display:inline-block;position:relative;margin:0}
+.byline.post-share-buttons .sharing{float:right}
+.sharing-button .svg-icon-24{fill:var(--ink-3)}
+
+/* archival note */
+.cl-notice{
+  margin:28px 0 34px;padding:18px 22px 18px 20px;border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:4px 10px 10px 4px;background:var(--paper)
+}
+.cl-notice .cl-kicker{margin-bottom:8px;color:var(--accent)}
+.cl-notice .cl-kicker::before{display:none}
+.cl-notice p{margin:0;font:400 16px/1.6 var(--serif);color:var(--ink-2)}
+.cl-notice p b{color:var(--ink);font-weight:600}
+.cl-notice-when{display:none}
+.cl-ready .cl-notice-when{display:inline}
+
+/* body */
+.post-body{color:var(--ink-2);font:400 18.5px/1.72 var(--serif);margin:0}
+.item-view .post-body{max-width:var(--measure)}
+.post-body p{margin:0 0 1.1em}
+.post-body h1,.post-body h2,.post-body h3,.post-body h4{color:var(--ink);letter-spacing:-.015em}
+.post-body h2{font:600 29px/1.2 var(--serif);margin:2em 0 .6em}
+.post-body h3{font:600 23px/1.25 var(--serif);margin:1.7em 0 .5em}
+.post-body h4{font:600 12.5px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.12em;margin:1.8em 0 .6em}
+.post-body a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+.post-body a:hover{color:var(--accent)}
+.post-body ul,.post-body ol{padding-left:1.3em;margin:0 0 1.2em}
+.post-body li{margin:.25em 0}
+.post-body li::marker{color:var(--ink-4)}
+.post-body hr{border:0;border-top:1px solid var(--rule);margin:2.4em 0}
+.post-body img{max-width:100%;height:auto;border-radius:6px}
+.post-body iframe{max-width:100%}
+.post-body a[imageanchor="1"]{display:inline-block}
+.post-body table{border-collapse:collapse;width:100%;margin:0 0 1.4em;font-size:.88em}
+.post-body th,.post-body td{border-bottom:1px solid var(--rule);padding:8px 10px;text-align:left}
+.post-body th{font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.post-body blockquote{
+  margin:1.6em 0;padding:4px 0 4px 22px;border-left:2px solid var(--accent);
+  font:italic 400 19px/1.6 var(--serif);color:var(--ink-2);background:none;text-align:left
+}
+.post-body blockquote p{display:block;margin:0 0 .6em}
+.post-body blockquote p:last-child{margin:0}
+.post-body [style*="Menlo"],.post-body [style*="monospace"],.post-body [style*="Courier"]{font-family:var(--mono)!important;font-size:.86em}
+
+/* inline code */
+.post-body code,.post-body kbd,.post-body tt{
+  font:500 .8em/1 var(--mono);background:var(--paper-2);border:1px solid var(--rule-2);
+  border-radius:5px;padding:.14em .38em;color:var(--ink);white-space:break-spaces;word-break:break-word
+}
+.post-body a code{color:inherit}
+
+/* code blocks */
+.post-body pre{
+  margin:0 0 1.5em;padding:18px 20px;background:var(--code-bg);color:var(--code-ink);
+  border:0;border-radius:12px;overflow:auto;max-width:100%;
+  font:400 13.5px/1.62 var(--mono);white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;
+  tab-size:4;-moz-tab-size:4;hyphens:none;page-break-inside:avoid;text-align:left
+}
+.post-body pre code{background:none;border:0;padding:0;font:inherit;color:inherit;white-space:inherit;word-break:normal;border-radius:0}
+.cl-code{margin:1.6em 0 1.8em;border-radius:12px;background:var(--code-bg);overflow:hidden;box-shadow:0 12px 28px -22px rgba(0,0,0,.6)}
+.cl-code pre{margin:0;border-radius:0}
+.cl-code figcaption{
+  display:flex;align-items:center;gap:12px;padding:0 10px 0 16px;height:38px;background:var(--code-bar);
+  border-bottom:1px solid rgba(255,255,255,.06);font:500 10.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--code-dim)
+}
+.cl-code figcaption::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.9}
+.cl-code-lang{color:var(--code-ink)}
+.cl-code-asof{opacity:.8}
+.cl-code-copy{
+  margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--code-dim);
+  padding:5px 11px;font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;transition:all .15s
+}
+.cl-code-copy:hover{color:var(--code-ink);border-color:rgba(255,255,255,.3)}
+.cl-code-copy.is-done{color:#9fd98a;border-color:rgba(159,217,138,.4)}
+
+/* highlight.js tokens */
+.hljs{color:var(--code-ink);background:transparent}
+.hljs-comment,.hljs-quote{color:#7f7b72;font-style:italic}
+.hljs-keyword,.hljs-selector-tag,.hljs-literal,.hljs-doctag{color:#ff8b7e}
+.hljs-built_in,.hljs-type,.hljs-title.class_,.hljs-class .hljs-title{color:#7fd3c0}
+.hljs-string,.hljs-regexp,.hljs-addition,.hljs-symbol{color:#bddc8e}
+.hljs-number,.hljs-attr,.hljs-attribute,.hljs-variable,.hljs-template-variable{color:#f3c677}
+.hljs-title,.hljs-title.function_,.hljs-section{color:#8fc5ff}
+.hljs-meta,.hljs-meta .hljs-keyword{color:#d3a8ff}
+.hljs-tag,.hljs-name,.hljs-selector-id,.hljs-selector-class{color:#ff8b7e}
+.hljs-deletion{color:#ff8b7e}
+.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
+
+/* gists */
+.post-body .gist{font-size:13px;margin:1.4em 0}
+.post-body .gist .gist-file{border-radius:12px!important;overflow:hidden}
+.post-body .gist code{background:none;border:0;padding:0;font-size:inherit}
+
+/* images from the old editor */
+@media (max-width:800px){
+  .item-view .post-body a[imageanchor="1"][style*="float: left;"],.item-view .post-body a[imageanchor="1"][style*="float: right;"]{float:none!important;clear:none!important}
+  .item-view .post-body a[imageanchor="1"] img{display:block;height:auto;margin:0 auto}
+  .post-body a[imageanchor]{display:block}
+  .item-view .post-body a[imageanchor="1"]{margin-left:0!important;margin-right:0!important}
+}
+@media (prefers-color-scheme:dark){
+  .post-body span[style*="color"],.post-body font[color]{color:inherit!important}
+  .post-body [style*="background"]{background:transparent!important}
+  .post-body img{background:#fff}
+}
+
+/* end mark + footer */
+.cl-endmark{
+  display:flex;align-items:center;gap:14px;margin:48px 0 26px;
+  font:500 10.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.2em;color:var(--ink-4)
+}
+.cl-endmark::before,.cl-endmark::after{content:'';flex:1;height:1px;background:var(--rule)}
+.cl-endmark .cl-recid{color:var(--ink-3)}
+
+.post-bottom{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.post-footer{flex:1 1 auto;order:1;margin:0;color:var(--ink-3)}
+.post-footer-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.post-footer-line:empty{display:none}
+.byline{color:var(--ink-3);display:inline-block;line-height:24px;vertical-align:top}
+.post-icons .svg-icon-24{width:18px;height:18px;min-width:18px}
+.byline.post-labels{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.byline.post-labels::before{content:'Filed under';margin-right:6px;font:500 10.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-4)}
+.byline.post-labels a,.Label .label-size,.Label li{
+  display:inline-block;padding:4px 11px;border:1px solid var(--rule);border-radius:999px;background:transparent;
+  font:500 11.5px/1.4 var(--mono);color:var(--ink-2);margin:0
+}
+.byline.post-labels a:hover{border-color:var(--accent);color:var(--accent)}
+.post-share-buttons-bottom{order:2;float:none}
+a.timestamp-link,a:active.timestamp-link,a:visited.timestamp-link{color:inherit;font:inherit;text-decoration:inherit}
+
+.cl-recnav{display:flex;gap:12px;margin:34px 0 0;padding-top:26px;border-top:1px solid var(--rule)}
+
+/* author box (if enabled) */
+.author-profile{display:flex;gap:14px;align-items:flex-start;margin-top:18px;font-size:15px}
+.author-profile img{border-radius:50%}
+
+@media (max-width:760px){
+  .item-view .Blog .post-outer-container{margin:20px -16px 0;padding:26px 20px 28px;border-radius:0;border-left:0;border-right:0}
+  .cl-record-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cl-record-grid>div:nth-child(3){padding-left:0;border-left:0}
+  .cl-record-grid>div:nth-child(n+3){margin-top:10px}
+  .post-body{font-size:17.5px}
+  .post-body pre{font-size:12.5px;padding:16px}
+  .cl-code{margin-left:-20px;margin-right:-20px;border-radius:0}
+}
+
+/* reading progress */
+.cl-progress{position:fixed;left:0;top:0;height:2px;width:100%;z-index:70;pointer-events:none}
+.cl-progress span{display:block;height:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+
+/* ---------- 13. Comments ("Marginalia") ---------- */
+#comments{margin-top:34px;padding:26px 0 0;border-top:1px solid var(--rule)}
+#comments h3.title.cl-comments-title{
+  position:static;clip:auto;width:auto;height:auto;overflow:visible;
+  margin:0 0 4px;font:500 26px/1.2 var(--serif);color:var(--ink)
+}
+.cl-comments-note{margin:0 0 24px;font:400 12px/1.5 var(--mono);color:var(--ink-3)}
+#comments[data-num-comments="0"] .cl-comments-note::after{content:' None were left on this record.'}
+#comments .comment-form h4{position:absolute;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}
+#comments .comment-thread ol{margin:0;padding-left:0}
+#comments .comment .comment-replybox-single,#comments .comment-thread .comment-replies{margin-left:52px}
+#comments .comment-thread .thread-count{display:none}
+#comments .comment{list-style-type:none;padding:0 0 26px;position:relative}
+#comments .comment .comment{padding-bottom:8px}
+.comment .avatar-image-container{position:absolute}
+.comment .avatar-image-container img{border-radius:50%}
+.avatar-image-container svg,.comment .avatar-image-container .avatar-icon{
+  border-radius:50%;border:1px solid var(--rule);fill:var(--ink-4);height:36px;margin:0;padding:7px;width:36px
+}
+.comment .comment-block{margin-top:6px;margin-left:52px;padding-bottom:0}
+#comments .comment-author-header-wrapper{margin-left:40px}
+#comments .comment .thread-expanded .comment-block{padding-bottom:20px}
+#comments .comment .comment-header .user,#comments .comment .comment-header .user a{color:var(--ink);font:600 13px var(--mono)}
+#comments .comment .comment-actions{bottom:0;margin-bottom:12px;position:absolute}
+#comments .comment .comment-actions>*{margin-right:10px}
+#comments .comment .comment-actions a,#comments .comment .comment-actions .comment-reply{
+  background:0 0;border:0;font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);cursor:pointer
+}
+#comments .comment .comment-actions a:hover{color:var(--accent)}
+#comments .comment .comment-header .datetime{display:inline-block;margin-left:10px;font:400 11.5px var(--mono);color:var(--ink-4)}
+#comments .comment .comment-header .datetime a,#comments .comment .comment-footer .comment-timestamp a{color:var(--ink-4)}
+#comments .comment .comment-content,.comment .comment-body{margin-top:8px;font-size:16.5px;line-height:1.6;color:var(--ink-2)}
+.comment-body{margin-bottom:12px}
+.comments .comments-content .loadmore.loaded{max-height:0;opacity:0;overflow:hidden}
+#comment-editor{margin:16px 0 20px}
+#comment-editor-src{display:none}
+#comment-holder .continue{display:none}
+.comment-footer{font:400 13px var(--mono);color:var(--ink-3)}
+.paging-control-container{margin-bottom:16px;font:500 12px var(--mono)}
+.paging-control-container .paging-control{display:inline-block;margin-right:8px;color:var(--accent)}
+.paging-control-container .comment-range-text{margin-right:8px}
+.byline.reactions iframe{height:20px}
+
+/* ---------- 14. Popular posts ("Most consulted") ---------- */
+.item-view .PopularPosts{margin:56px 0 0;padding:0;background:none}
+.PopularPosts h3.title{margin:0 0 20px;font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3);display:flex;align-items:center;gap:10px}
+.PopularPosts h3.title::before{content:'';width:22px;height:1px;background:currentColor;opacity:.6}
+.PopularPosts .widget-content>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.PopularPosts article.post{padding:20px 20px 18px;border:1px solid var(--rule);border-radius:12px;background:var(--card);margin:0;display:flex}
+.PopularPosts article.post+article.post{border-top:1px solid var(--rule)}
+.cl-pop{display:flex;flex-direction:column;width:100%}
+.cl-pop-meta{margin:0 0 10px;font:500 10.5px/1.4 var(--mono);color:var(--ink-4);letter-spacing:.04em}
+.cl-pop-meta .cl-recid{color:var(--ink-3);font-weight:700}
+.PopularPosts .post-title{margin:0 0 10px;font:500 19px/1.25 var(--serif);letter-spacing:-.01em}
+.PopularPosts .post-title a{color:var(--ink)}
+.PopularPosts .post-title a:hover{color:var(--accent)}
+.PopularPosts .item-content{margin-top:auto;font-size:14.5px;line-height:1.55;color:var(--ink-3)}
+.popular-posts-snippet.snippet-container{max-height:calc(1.55em * 3)}
+.popular-posts-snippet .snippet-item{line-height:1.55}
+.PopularPosts .popular-posts-snippet .snippet-fade{background:linear-gradient(to left,var(--card) 0,var(--card) 25%,rgba(0,0,0,0) 100%);height:1.55em}
+.PopularPosts .item-thumbnail{display:none}
+.PopularPosts .jump-link{margin-top:14px}
+@media (max-width:760px){.PopularPosts .widget-content>div{grid-template-columns:1fr}}
+
+/* ---------- 15. Static pages & 404 ---------- */
+.page-view .Blog .post-outer-container::before{display:none}
+.cl-404{padding:80px 0 40px;max-width:640px}
+.cl-404 h2{margin:0 0 16px;font:500 clamp(34px,5vw,52px)/1.05 var(--serif);letter-spacing:-.025em}
+.cl-404 p{margin:0 0 24px;color:var(--ink-2)}
+.cl-404 a{font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}
+.error-view .status-msg-body{display:none}
+.status-msg-body{font:400 14px var(--mono);color:var(--ink-3);padding:40px 0}
+
+/* ---------- 16. Index rail (sidebar) ---------- */
+.cl-rail-head{padding:30px 24px 10px}
+.cl-rail-head .cl-kicker{margin-bottom:10px}
+.cl-rail-lede{margin:0;font:400 15px/1.5 var(--serif);color:var(--ink-3)}
+.sidebar_top_wrapper.no-items{display:none}
+.sidebar-container .widget{margin:0 24px;padding:22px 0}
+.sidebar-container .widget+.widget{border-top:1px solid var(--rule)}
+.sidebar-container .widget .title{
+  margin:0;font:500 10.5px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-3)
+}
+.sidebar-container .collapsible[open]>summary{margin-bottom:14px}
+.sidebar-container .widget ul{list-style:none;margin:0;padding:0}
+.sidebar-container .widget li{font-size:15px;line-height:normal}
+
+/* archive by year */
+.BlogArchive .hierarchy{list-style:none;margin:0;padding:0}
+.BlogArchive li{margin:0}
+.BlogArchive .cl-y{padding:6px 0}
+.BlogArchive .cl-y>.hierarchy-title{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:8px}
+.BlogArchive .cl-y>.hierarchy-title>a{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font:500 17px/1.3 var(--serif);color:var(--ink)}
+.BlogArchive .cl-y>.hierarchy-title>a:hover{color:var(--accent)}
+.BlogArchive .post-count{font:500 11px var(--mono);color:var(--ink-4)}
+.BlogArchive .cl-bar{grid-column:1/-1;display:block;height:2px;margin-top:6px;background:var(--rule-2);border-radius:2px;overflow:hidden}
+.BlogArchive .cl-bar::before{content:'';display:block;height:100%;width:calc(var(--w,0) * 100%);background:var(--ink-3)}
+.BlogArchive .cl-y:hover .cl-bar::before{background:var(--accent)}
+.BlogArchive .cl-y-toggle{
+  grid-row:1;grid-column:2;width:24px;height:24px;border:0;background:0 0;border-radius:50%;color:var(--ink-4);
+  font:500 14px/24px var(--mono);padding:0;transition:transform .2s
+}
+.BlogArchive .cl-y-toggle:hover{color:var(--accent);background:var(--accent-soft)}
+.BlogArchive .cl-y.cl-open .cl-y-toggle{transform:rotate(90deg)}
+.BlogArchive .cl-y>.hierarchy-content{display:none;padding:8px 0 4px 2px}
+.BlogArchive .cl-y.cl-open>.hierarchy-content{display:block}
+.BlogArchive .cl-y .cl-y .hierarchy-content,.BlogArchive .hierarchy-content .hierarchy-content{display:block}
+.BlogArchive .hierarchy-content .archivedate{padding:3px 0}
+.BlogArchive .hierarchy-content .hierarchy-title a{display:flex;justify-content:space-between;font:400 13px/1.4 var(--mono);color:var(--ink-3)}
+.BlogArchive .hierarchy-content .hierarchy-title a:hover{color:var(--accent)}
+.BlogArchive .posts{display:none!important}
+.BlogArchive .posts li{padding:3px 0;font:400 14px/1.35 var(--serif)}
+.BlogArchive .posts a{color:var(--ink-2)}
+.BlogArchive .first-items>.hierarchy>.archivedate:not(.cl-y),.BlogArchive .remaining-items>.hierarchy>.archivedate:not(.cl-y){padding:6px 0}
+.BlogArchive .flat li{padding:4px 0}
+.BlogArchive .post-count::before{content:''}
+.BlogArchive .post-count::after{content:''}
+
+/* subjects (labels) */
+.Label .widget-content ul{display:flex;flex-wrap:wrap;gap:6px}
+.Label .cloud-label-widget-content{display:flex;flex-wrap:wrap;gap:6px}
+.Label li,.Label span.label-size{padding:0;border:0;margin:0;background:none}
+.Label li a,.Label span.label-size a{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--rule);border-radius:999px;
+  font:500 11.5px/1.4 var(--mono);color:var(--ink-2);background:var(--paper)
+}
+.Label li a:hover,.Label span.label-size a:hover{border-color:var(--accent);color:var(--accent)}
+.Label .label-count{font-size:10px;color:var(--ink-4);float:none;margin:0}
+.Label .label-count::before{content:''}
+.Label .label-count::after{content:''}
+.Label .label-size-5 a{color:var(--ink);font-weight:700}
+.Label .label-size-4 a{color:var(--ink)}
+.Label .label-size-1 a{color:var(--ink-3)}
+
+/* profile (hidden by default) */
+.widget.Profile{margin:0;width:100%}
+.widget.Profile .individual{text-align:center}
+.widget.Profile .profile-img{border-radius:50%}
+.widget.Profile dd{margin:0 16px;color:var(--ink-3)}
+.widget.Profile .profile-link{color:var(--ink);display:flex;flex-direction:column;align-items:center}
+.widget.Profile .profile-link.visit-profile{display:inline-block}
+
+.cl-rail-foot{margin:0 24px;padding:22px 0 40px;border-top:1px solid var(--rule);font:400 15px/1.5 var(--serif);color:var(--ink-2)}
+.cl-rail-foot p{margin:0}
+.cl-rail-foot .cl-kicker{margin-bottom:10px}
+.cl-rail-foot a{font:500 12px var(--mono);color:var(--ink-3)}
+.cl-rail-foot a:hover{color:var(--accent)}
+
+/* HTML widgets */
+.sidebar-container .HTML .widget-content{font-size:14px}
+
+/* ---------- 17. Colophon / footer ---------- */
+.cl-foot{padding:36px 0 48px;border-top:1px solid var(--ink)}
+.footer{margin:0}
+.cl-colophon{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px 48px;margin-bottom:28px}
+.cl-colophon .cl-kicker{grid-column:1/-1;margin:0}
+.cl-colophon-lede{margin:0;font:400 21px/1.45 var(--serif);color:var(--ink)}
+.cl-colophon-lede strong{font-weight:600}
+.cl-colophon-body{margin:0;font:400 15px/1.6 var(--serif);color:var(--ink-3)}
+.cl-colophon-end{grid-column:1/-1;margin:8px 0 0;font:500 10.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.24em;color:var(--ink-4);text-align:center}
+.Attribution{margin-top:0;text-align:center;color:var(--ink-4);font:400 11.5px var(--mono)}
+.Attribution a,.Attribution a:hover,.Attribution a:visited{color:var(--ink-3)}
+.Attribution svg{fill:var(--ink-4);width:18px;height:18px;vertical-align:-4px;margin-right:6px}
+.Attribution .blogger img,.Attribution .blogger svg{vertical-align:bottom}
+.Attribution div{line-height:22px;margin-top:.4em}
+.Attribution .copyright,.Attribution .image-attribution{font-size:.95em;margin-top:.8em}
+@media (max-width:760px){.cl-colophon{grid-template-columns:1fr}.cl-colophon-lede{font-size:19px}}
+
+/* ---------- 18. Print ---------- */
+@media print{
+  .cl-status,.sidebar-container,.centered-top-container,.search,.post-share-buttons,.PopularPosts,#comments,.cl-recnav,.cl-progress,.cl-code-copy{display:none!important}
+  body{background:#fff}
+  .cl-shell{display:block}
+  .item-view .Blog .post-outer-container{box-shadow:none;border:0;padding:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- 19. Blogger Layout editor ---------- */
+body#layout .cl-status,body#layout .cl-hero,body#layout .cl-colophon,body#layout .cl-rail-head,body#layout .cl-progress{display:none}
+body#layout .cl-shell{display:block}
+body#layout .hidden,body#layout .invisible{display:inherit}
+body#layout .navigation,body#layout .hamburger-menu,body#layout .search-expand{display:none}
+body#layout .page,body#layout .sidebar_top,body#layout .sidebar_bottom{display:inline-block;left:inherit;position:relative;vertical-align:top}
+body#layout .page{float:right;margin-left:20px;width:55%}
+body#layout .sidebar-container{float:right;width:40%;position:relative;transform:none;height:auto}
+body#layout .page_body{padding:0;position:relative;top:0}
+body#layout .centered{max-width:954px}
+body#layout .search form>*{display:block}
+</style></head>
+<body class="home-view version-1-3-0">
+<a class='skip-navigation' href='#main'>Skip to main content</a>
+<div class='cl-status' role='note'>
+      <div class='cl-status-in'>
+        <span aria-hidden='true' class='cl-status-dot'></span>
+        <strong>Archived</strong>
+        <span aria-hidden='true' class='cl-status-sep'>/</span>
+        <span class='cl-status-text'>Read-only technical record, <span data-cl-range>2011–2023</span></span>
+        <span class='cl-status-meta'>Archived Sep 2026</span>
+      </div>
+    </div>
+<div class='cl-shell'><div class='page'><div class='page_body'><div class='centered'>
+<div class='centered-top-placeholder'></div><header class='centered-top-container' role='banner'><div class='centered-top'><button class='svg-icon-24-button hamburger-menu flat-icon-button ripple'><svg class='svg-icon-24' viewBox='0 0 24 24'><path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'/></svg></button><div class='search'><button aria-label='Search' class='search-expand touch-icon-button'><div class='flat-icon-button ripple'><svg class='svg-icon-24 search-expand-icon' viewBox='0 0 24 24'><path d='M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/></svg></div></button><div class='section' id='search_top'><div class='widget BlogSearch'><h3 class='title'>Search This Blog</h3><div class='widget-content' role='search'><form action='#'><div class='search-input'><input aria-label='Search the record' autocomplete='off' name='q' placeholder='Search the record…'/></div><input class='search-action flat-button' type='submit' value='Search'/></form></div></div></div></div><div class='clearboth'></div><div class='blog-name container'><div class='container section' id='header'><div class='widget Header'><div class='header-widget'><div><h1><a href='home.html'>blog.codeleak.pl</a></h1></div><p>by Rafał Borowiec</p></div></div></div><nav><div class='section' id='page_list_top'><div class='widget PageList'><div class='widget-content'><ul class='tabs'><li class='selected'><a href='home.html'>Home</a></li><li><a href='#'>About Me</a></li></ul></div></div></div></nav></div></div></header>
+<section aria-labelledby='cl-hero-title' class='cl-hero'>
+                <p class='cl-kicker'>Public technical record · <span data-cl-range>2011–2023</span></p>
+                <h2 class='cl-hero-title' id='cl-hero-title'>Twelve years of notes on Java, Spring &amp; testing — <em>kept exactly as they were written.</em></h2>
+                <p class='cl-hero-lede'>blog.codeleak.pl is closed for new entries. What remains is a record: <b><span data-cl-total>143</span> posts</b> on Java, Spring, testing and developer tooling, each preserved as published — with the versions, habits and opinions of its time. Read them as history of how things were done, not as current advice.</p>
+                <div class='cl-tl-wrap'>
+                  <div class='cl-tl-caption'><span>Entries per year</span><span>2018 and 2022: no entries</span></div>
+                  <div id='cl-timeline'></div>
+                </div>
+              </section>
+<div class='cl-body'><main class='centered-bottom' id='main' role='main'><div class='main section' id='page_body'><div class='widget FeaturedPost' id='FeaturedPost1'><div class='widget-content'><div role='feed'><article class='post'><div class='cl-final' data-cl-date='2023-02-22T21:56:00.002+01:00'><p class='cl-kicker'><span>Final entry</span> <span class='cl-recid'></span> <time class='cl-date'></time></p><h3 class='post-title'><a href='post.html'>Playwright meets JUnit 5</a></h3><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>Playwright is a Node.js -based tool for automating browsers. It supports all modern rendering engines including Chromium , WebKit and Firefox . Playwright can be used with JavaScript , TypeScript , Python , .NET and Java . In this tutorial, we will explore the setup of a test automation project using Playwright for Java , JUnit 5 and Gradle . You will also learn some basics of Playwright tools like codegen , Playwrig</div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></article></div></div></div><div class='widget Blog' id='Blog1'><div class='blog-posts hfeed container'><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2023-02-08T23:27:00.004+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Starter template for prototyping and building CLI tools with Node.js and TypeScript</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'></div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2023-02-02T01:36:00.007+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>macOS: Insert current date shortcut with `Shortcuts.app`</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>Shortcuts.app in macOS is a tool for automating repetitive tasks. It has a user-friendly drag-and-drop interface and supports tasks such as opening apps, copying/pasting text, and sending messages. In this article, I&#x27;ll demonstrate how to create a shortcut tha</div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2023-01-09T19:49:00.008+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Frontend code analysis with SonarQube</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>SonarQube is an open-source tool for continuous code quality inspection that analyzes code for defects, vulnerabilities, and code smells. It helps developers and teams to improve the quality of their code by identifying problems early in the development proces</div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2023-01-01T23:58:00.004+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Manage multiple Java SDKs with asdf with ease</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>asdf is a helpful command-line tool that allows you to manage and switch between different versions of programming language runtimes including Java , Kotlin , Node.js , Python and their associated packages and libraries including Gradle , Maven , Yarn , Spring</div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2021-12-05T14:01:00.006+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Parameterized tests in JavaScript with Jest</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>Parameterized tests are used to test the same code under different conditions. One can set up a test method that retrieves data from a data source. This data source can be a collection of objects, external file or maybe even a database. The general idea is to </div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2021-11-19T20:42:00.004+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Testing promise rejection in JavaScript with Jest</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'></div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2021-11-19T10:55:00.019+01:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Testing exceptions in JavaScript with Jest</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'></div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article><article class='post-outer-container'><div class='post-outer'><div class='post' data-cl-date='2020-06-17T12:34:00.003+02:00'><div class='cl-entry'><div class='cl-entry-meta'><span class='cl-recid'></span><time class='cl-date'></time><span class='cl-ago'></span></div><div class='cl-entry-main'><h3 class='post-title entry-title'><a href='post.html'>Getting started with Github Actions: Run JUnit 5 tests in a Java project with Maven</a></h3><div class='container post-body entry-content'><div class='post-snippet snippet-container r-snippet-container'><div class='snippet-item r-snippetized'>Github Actions is a CI/CD service provided by Github and it is free for public repositories. For private repositories, each GitHub account receives a certain amount of free minutes and storage, depending on the product used with the account. In this blog post,</div></div></div><div class='jump-link'><a href='post.html'>Open record</a></div></div></div></div></div></article></div><div class='blog-pager container' id='blog-pager'><a class='blog-pager-older-link' href='#'>Older entries →</a></div></div></div></main></div>
+<div class='cl-foot'><div class='cl-colophon'>
+                <p class='cl-kicker'>Colophon</p>
+                <p class='cl-colophon-lede'><strong>blog.codeleak.pl</strong> is a public technical record on Java, Spring, testing and developer tooling, written by Rafał Borowiec.</p>
+                <p class='cl-colophon-body'>The last entry was published in February 2023; the blog was archived in September 2026. Entries stay online as they were published — no rewrites, no silent updates. The older a record, the more its paper has yellowed.</p>
+                <dl class='cl-facts'>
+                  <div><dt>First entry</dt><dd>Mar 2011</dd></div>
+                  <div><dt>Last entry</dt><dd>Feb 2023</dd></div>
+                  <div><dt>Entries</dt><dd data-cl-total>143</dd></div>
+                  <div><dt>Archived</dt><dd class='cl-closed'>Sep 2026</dd></div>
+                </dl>
+                <p class='cl-colophon-end'>— End of record —</p>
+              </div><footer class='footer section' id='footer'><div class='widget Attribution'><div class='widget-content'><div class='blogger'><a href='#'>Powered by Blogger</a></div></div></div></footer></div>
+</div></div></div>
+<aside class='sidebar-container container sidebar-invisible' role='complementary'>
+<div class='navigation'><button class='svg-icon-24-button flat-icon-button ripple sidebar-back'><svg class='svg-icon-24' viewBox='0 0 24 24'><path d='M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z'/></svg></button></div>
+<div class='cl-rail-head'>
+        <p class='cl-kicker'>Index</p>
+        <p class='cl-rail-lede'>Every entry in the record, by year and by subject.</p>
+      </div>
+<div class='sidebar_bottom section' id='sidebar_bottom'><div class='widget BlogArchive' id='BlogArchive1'><details class='collapsible extendable' open='open'><summary><div class='collapsible-title'><h3 class='title'>By year</h3></div></summary><div class='widget-content'><div id='ArchiveList'><div id='BlogArchive1_ArchiveList'><div class='first-items'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2023/'>2023 <span class='post-count'>5</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2023/02/'>February <span class='post-count'>3</span></a></div><div class='hierarchy-content'><ul class='posts hierarchy'><li><a href='https://blog.codeleak.pl/2023/02/playwright-meets-junit-5_01997896446.html'>Playwright meets JUnit 5</a></li><li><a href='https://blog.codeleak.pl/2023/02/starter-template-for-prototyping-and_8.html'>Starter template for prototyping and building CLI tools with Node.js and TypeScript</a></li><li><a href='https://blog.codeleak.pl/2023/02/macos-insert-current-date-shortcut-with.html'>macOS: Insert current date shortcut with `Shortcuts.app`</a></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2023/01/'>January <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2021/'>2021 <span class='post-count'>3</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2021/12/'>December <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2021/11/'>November <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/'>2020 <span class='post-count'>14</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/06/'>June <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/05/'>May <span class='post-count'>5</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/03/'>March <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/02/'>February <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2020/01/'>January <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/'>2019 <span class='post-count'>8</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/12/'>December <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/10/'>October <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/09/'>September <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/04/'>April <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2019/03/'>March <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/'>2017 <span class='post-count'>13</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/11/'>November <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/10/'>October <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/09/'>September <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/06/'>June <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/04/'>April <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2017/03/'>March <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/'>2016 <span class='post-count'>12</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/12/'>December <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/09/'>September <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/05/'>May <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/04/'>April <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/03/'>March <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/02/'>February <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2016/01/'>January <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/'>2015 <span class='post-count'>25</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/12/'>December <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/11/'>November <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/09/'>September <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/08/'>August <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/07/'>July <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/06/'>June <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/05/'>May <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/04/'>April <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/03/'>March <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/02/'>February <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2015/01/'>January <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/'>2014 <span class='post-count'>35</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/12/'>December <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/11/'>November <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/10/'>October <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/09/'>September <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/08/'>August <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/07/'>July <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/06/'>June <span class='post-count'>6</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/05/'>May <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/04/'>April <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/03/'>March <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/02/'>February <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2014/01/'>January <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/'>2013 <span class='post-count'>16</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/12/'>December <span class='post-count'>3</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/11/'>November <span class='post-count'>5</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/10/'>October <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/09/'>September <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/07/'>July <span class='post-count'>4</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2013/04/'>April <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2012/'>2012 <span class='post-count'>3</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2012/05/'>May <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2012/03/'>March <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2012/01/'>January <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li></ul></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/'>2011 <span class='post-count'>9</span></a></div><div class='hierarchy-content'><ul class='hierarchy'><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/12/'>December <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/09/'>September <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/08/'>August <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/06/'>June <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/04/'>April <span class='post-count'>1</span></a></div><div class='hierarchy-content'></div></li><li class='archivedate'><div class='hierarchy-title'><a class='post-count-link' href='https://blog.codeleak.pl/2011/03/'>March <span class='post-count'>2</span></a></div><div class='hierarchy-content'></div></li></ul></div></li></ul></div></div></div></div></details></div><div class='widget Label' id='Label1'><details class='collapsible extendable' open='open'><summary><div class='collapsible-title'><h3 class='title'>Subjects</h3></div></summary><div class='widget-content cloud-label-widget-content'><span class='label-size label-size-2'><a class='label-name' href='#'>angular2<span class='label-count'>4</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>assertj<span class='label-count'>4</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>aws<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>docker<span class='label-count'>4</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>eclipse<span class='label-count'>1</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>gradle<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>intellij<span class='label-count'>5</span></a></span><span class='label-size label-size-5'><a class='label-name' href='#'>java<span class='label-count'>25</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>java 8<span class='label-count'>8</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>java 9 and beyond<span class='label-count'>3</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>javascript<span class='label-count'>5</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>jee<span class='label-count'>3</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>jersey<span class='label-count'>3</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>jest<span class='label-count'>3</span></a></span><span class='label-size label-size-3'><a class='label-name' href='#'>junit 5<span class='label-count'>11</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>kanban<span class='label-count'>1</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>lombok<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>macOS<span class='label-count'>6</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>maven<span class='label-count'>3</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>nodejs<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>openshift<span class='label-count'>4</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>playwright<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>practices<span class='label-count'>5</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>productivity<span class='label-count'>7</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>quarkus<span class='label-count'>3</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>quartz<span class='label-count'>1</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>selenium<span class='label-count'>5</span></a></span><span class='label-size label-size-3'><a class='label-name' href='#'>spring<span class='label-count'>15</span></a></span><span class='label-size label-size-3'><a class='label-name' href='#'>spring 4<span class='label-count'>13</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>spring 5<span class='label-count'>1</span></a></span><span class='label-size label-size-5'><a class='label-name' href='#'>spring boot<span class='label-count'>26</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>spring data<span class='label-count'>1</span></a></span><span class='label-size label-size-3'><a class='label-name' href='#'>spring mvc<span class='label-count'>16</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>spring security<span class='label-count'>5</span></a></span><span class='label-size label-size-2'><a class='label-name' href='#'>testing<span class='label-count'>8</span></a></span><span class='label-size label-size-3'><a class='label-name' href='#'>thymeleaf<span class='label-count'>12</span></a></span><span class='label-size label-size-4'><a class='label-name' href='#'>tools<span class='label-count'>19</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>typescript<span class='label-count'>3</span></a></span><span class='label-size label-size-5'><a class='label-name' href='#'>unit testing<span class='label-count'>24</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>vite<span class='label-count'>1</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>vite-node<span class='label-count'>1</span></a></span><span class='label-size label-size-1'><a class='label-name' href='#'>vitest<span class='label-count'>1</span></a></span></div></details></div></div>
+<div class='cl-rail-foot'>
+        <p class='cl-kicker'>Author</p>
+        <p>Rafał Borowiec</p>
+        <p><a href='https://blog.codeleak.pl/p/author.html'>About</a> · <a href='https://x.com/kolorobot' rel='me noopener'>@kolorobot on X</a></p>
+      </div>
+</aside></div>
+<script>/* codeleak — The Record: archive enhancements (no dependencies). */
+(function () {
+  'use strict';
+
+  var CFG = {
+    since: 2011,
+    until: 2023, // the record closes here; anything published later is an epilogue (no archival note, not counted)
+    // Used only if the Archive widget is missing from the page.
+    fallbackYears: { 2011: 9, 2012: 3, 2013: 16, 2014: 35, 2015: 25, 2016: 12, 2017: 13, 2018: 0, 2019: 8, 2020: 14, 2021: 3, 2022: 0, 2023: 5 },
+    hljs: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/'
+  };
+
+  var doc = document;
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function $$(sel, root) { return Array.prototype.slice.call((root || doc).querySelectorAll(sel)); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function el(tag, cls, html) { var e = doc.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function setText(root, sel, text) { $$(sel, root).forEach(function (n) { n.textContent = text; }); }
+
+  function parseISO(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+    return m ? { y: +m[1], m: +m[2], d: +m[3] } : null;
+  }
+  function yearsAgo(p) {
+    var now = new Date(), a = now.getFullYear() - p.y, nm = now.getMonth() + 1;
+    if (nm < p.m || (nm === p.m && now.getDate() < p.d)) a--;
+    return Math.max(0, a);
+  }
+  function ageText(n) { return n < 1 ? 'under a year' : n === 1 ? '1 year' : n + ' years'; }
+  function agoText(n) { return n < 1 ? 'this year' : n === 1 ? '1 yr ago' : n + ' yrs ago'; }
+  function recId(p) { return 'CL-' + p.y + '-' + pad(p.m) + pad(p.d); }
+  function niceDate(p) { return p.d + ' ' + MONTHS[p.m - 1].slice(0, 3) + ' ' + p.y; }
+
+  function tier(n) {
+    if (n >= 10) return { key: 'vintage', name: 'Vintage record',
+      text: 'It documents how things were done at the time. Expect deprecated APIs and long-gone tooling \u2014 valuable as history, risky as a recipe.' };
+    if (n >= 5) return { key: 'historical', name: 'Historical record',
+      text: 'Versions, APIs and defaults have most likely changed since. Read it as context and verify against current docs before you copy anything.' };
+    return { key: 'recent', name: 'Archived record',
+      text: 'It is no longer maintained, so parts of it may already be out of date \u2014 check current docs for versions, APIs and defaults before relying on it.' };
+  }
+
+  /* ---------- Years: read the Archive widget (falls back to frozen data) ---------- */
+  function readYears() {
+    var years = {}, links = {};
+    $$('.BlogArchive li.archivedate').forEach(function (li) {
+      if (li.parentNode && li.parentNode.closest && li.parentNode.closest('li.archivedate')) return; // months
+      var a = li.querySelector('.hierarchy-title a, a.post-count-link');
+      var m = a && /(\d{4})/.exec(a.textContent);
+      if (!m) return;
+      li.classList.add('cl-y');
+      if (+m[1] > CFG.until) return;
+      var c = li.querySelector('.post-count');
+      years[+m[1]] = c ? parseInt(c.textContent.replace(/\D/g, ''), 10) || 0 : 0;
+      links[+m[1]] = a.href;
+    });
+    if (!Object.keys(years).length) years = CFG.fallbackYears;
+    var ys = Object.keys(years).map(Number);
+    var from = Math.min.apply(null, ys.concat(CFG.since)), to = CFG.until;
+    var list = [], total = 0, max = 0;
+    for (var y = from; y <= to; y++) {
+      var n = years[y] || 0;
+      total += n; max = Math.max(max, n);
+      list.push({ y: y, n: n, href: links[y] || ('/' + y + '/') });
+    }
+    return { list: list, total: total, max: max, from: from, to: to };
+  }
+
+  function renderTimeline(data) {
+    var host = doc.getElementById('cl-timeline');
+    if (!host) return;
+    var ol = el('ol', 'cl-tl');
+    data.list.forEach(function (it, i) {
+      var li = el('li', it.n ? '' : 'is-empty');
+      if (i === data.list.length - 1) li.classList.add('is-last');
+      li.style.setProperty('--h', it.n ? Math.max(0.04, it.n / data.max).toFixed(3) : 0);
+      var inner = '<span class="cl-tl-n">' + (it.n || '—') + '</span><span class="cl-tl-bar"></span>' +
+        '<span class="cl-tl-lbl">’' + String(it.y).slice(2) + '</span>';
+      if (it.n) {
+        var a = el('a', null, inner);
+        a.href = it.href;
+        a.title = it.y + ' · ' + it.n + (it.n === 1 ? ' entry' : ' entries');
+        li.appendChild(a);
+      } else {
+        var s = el('span', 'cl-tl-cell', inner);
+        s.title = it.y + ' · no entries';
+        li.appendChild(s);
+      }
+      ol.appendChild(li);
+    });
+    host.innerHTML = '';
+    host.appendChild(ol);
+    host.appendChild(el('div', 'cl-tl-lbls-gap'));
+  }
+
+  function enhanceArchiveRail(data) {
+    var max = data.max || 1;
+    var path = location.pathname;
+    $$('.BlogArchive li.cl-y').forEach(function (li) {
+      var title = li.querySelector('.hierarchy-title');
+      var c = li.querySelector('.post-count');
+      if (!title || title.querySelector('.cl-bar')) return;
+      var n = c ? parseInt(c.textContent.replace(/\D/g, ''), 10) || 0 : 0;
+      var bar = el('span', 'cl-bar');
+      bar.style.setProperty('--w', (n / max).toFixed(3));
+      var content = li.querySelector('.hierarchy-content');
+      if (content && content.children.length) {
+        var btn = el('button', 'cl-y-toggle', '›');
+        btn.type = 'button';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Show months');
+        btn.addEventListener('click', function () {
+          var open = li.classList.toggle('cl-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        title.appendChild(btn);
+        var y = /(\d{4})/.exec(title.textContent);
+        if (y && path.indexOf('/' + y[1] + '/') === 0) { li.classList.add('cl-open'); btn.setAttribute('aria-expanded', 'true'); }
+      }
+      title.appendChild(bar);
+    });
+  }
+
+  /* ---------- Posts: record IDs, age, tier, span ---------- */
+  function decoratePosts(data) {
+    $$('[data-cl-date]').forEach(function (post) {
+      var p = parseISO(post.getAttribute('data-cl-date'));
+      if (!p) return;
+      var age = yearsAgo(p), t = tier(age);
+      var epilogue = p.y > CFG.until;
+      if (epilogue) {
+        post.classList.add('cl-epilogue');
+        $$('.cl-notice', post).forEach(function (n) { n.parentNode.removeChild(n); });
+      }
+      setText(post, '.cl-recid', recId(p));
+      setText(post, '.cl-age', ageText(age));
+      setText(post, '.cl-ago', agoText(age));
+      setText(post, '.cl-month', MONTHS[p.m - 1] + ' ' + p.y);
+      setText(post, '.cl-year', String(p.y));
+      setText(post, '.cl-tier-name', t.name);
+      setText(post, '.cl-tier-text', t.text);
+      $$('.cl-date', post).forEach(function (d) { d.textContent = niceDate(p); });
+      post.classList.add('cl-tier-' + t.key, 'cl-ready');
+
+      var span = post.querySelector('.cl-span');
+      if (span) {
+        var from = data.from, to = data.to + 1;
+        var pos = epilogue ? 1 : Math.min(1, Math.max(0, (p.y + (p.m - 1) / 12 + (p.d - 1) / 365 - from) / (to - from)));
+        span.style.setProperty('--pos', pos.toFixed(4));
+        setText(span, '.cl-span-from', String(data.from));
+        setText(span, '.cl-span-to', String(data.to));
+        var dot = span.querySelector('b');
+        if (dot) dot.setAttribute('data-label', epilogue ? 'Epilogue ' + p.y : String(p.y));
+      }
+      if (!epilogue && doc.body.classList.contains('item-view') && post.closest('.Blog')) {
+        doc.body.style.setProperty('--age', Math.min(1, age / 15).toFixed(3));
+        var card = post.closest('.post-outer-container');
+        if (card) card.style.setProperty('--age', Math.min(1, age / 15).toFixed(3));
+      }
+    });
+  }
+
+  /* ---------- Ledger: year dividers between entries ---------- */
+  function yearMarks() {
+    if (doc.body.classList.contains('item-view')) return;
+    var last = null;
+    $$('.Blog .blog-posts > .post-outer-container').forEach(function (art) {
+      var d = art.querySelector('[data-cl-date]');
+      var p = d && parseISO(d.getAttribute('data-cl-date'));
+      if (!p || p.y === last) return;
+      last = p.y;
+      var mark = el('div', 'cl-yearmark', '<b>' + p.y + '</b>');
+      mark.setAttribute('role', 'separator');
+      art.parentNode.insertBefore(mark, art);
+    });
+  }
+
+  /* ---------- Totals ---------- */
+  function totals(data) {
+    $$('[data-cl-total]').forEach(function (n) { n.textContent = String(data.total); });
+    $$('[data-cl-range]').forEach(function (n) { n.textContent = data.from + '–' + data.to; });
+  }
+
+  /* ---------- Code blocks: caption, copy, highlight ---------- */
+  var LANG_ALIASES = { html: 'xml', xhtml: 'xml', js: 'javascript', ts: 'typescript', sh: 'bash', shell: 'bash', yml: 'yaml', kt: 'kotlin' };
+
+  function langOf(pre) {
+    var code = pre.querySelector('code');
+    var cls = ((code && code.className) || '') + ' ' + (pre.className || '');
+    var m = /language-([\w+-]+)/.exec(cls) || /brush:\s*([\w+-]+)/.exec(cls) || /\blang-([\w+-]+)/.exec(cls);
+    return m ? m[1].toLowerCase() : '';
+  }
+
+  function decorateCode() {
+    var post = doc.querySelector('.item-view .Blog [data-cl-date]');
+    var p = post && parseISO(post.getAttribute('data-cl-date'));
+    var pres = $$('.item-view .post-body pre');
+    pres.forEach(function (pre) {
+      if (pre.parentNode.classList && pre.parentNode.classList.contains('cl-code')) return;
+      var lang = langOf(pre);
+      pre.setAttribute('data-cl-lang', lang);
+      var fig = el('figure', 'cl-code');
+      var cap = el('figcaption', null,
+        '<span class="cl-code-lang">' + (lang || 'code') + '</span>' +
+        (p ? '<span class="cl-code-asof">as of ' + p.y + '</span>' : '') +
+        '<button type="button" class="cl-code-copy">Copy</button>');
+      pre.parentNode.insertBefore(fig, pre);
+      fig.appendChild(cap);
+      fig.appendChild(pre);
+      cap.querySelector('button').addEventListener('click', function () {
+        var btn = this, text = pre.innerText.replace(/\n$/, '');
+        var done = function () {
+          btn.textContent = 'Copied'; btn.classList.add('is-done');
+          setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('is-done'); }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () {});
+        else {
+          var ta = el('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          doc.body.appendChild(ta); ta.select();
+          try { doc.execCommand('copy'); done(); } catch (e) {}
+          doc.body.removeChild(ta);
+        }
+      });
+    });
+    if (pres.length) loadHighlighter(pres);
+  }
+
+  function loadScript(src, cb) {
+    var s = doc.createElement('script');
+    s.src = src; s.async = true; s.onload = cb; s.onerror = function () {};
+    doc.head.appendChild(s);
+  }
+
+  function loadHighlighter(pres) {
+    if (!CFG.hljs) return;
+    loadScript(CFG.hljs + 'highlight.min.js', function () {
+      loadScript(CFG.hljs + 'languages/groovy.min.js', function () {
+        var hljs = window.hljs;
+        if (!hljs) return;
+        hljs.configure({ ignoreUnescapedHTML: true });
+        pres.forEach(function (pre) {
+          var target = pre.querySelector('code') || pre;
+          var lang = LANG_ALIASES[pre.getAttribute('data-cl-lang')] || pre.getAttribute('data-cl-lang');
+          // Unlabelled blocks: Java is by far the most common language here, so recognise it first.
+          if (!lang && /^\s*(package|import)\s+[\w.]+(\.\*)?;|\b(public|private|protected)\s+(static\s+)?(final\s+)?(class|interface|void|enum)\b/m.test(target.textContent)) {
+            lang = 'java';
+            pre.setAttribute('data-cl-lang', 'java');
+            var cl = pre.parentNode.querySelector('.cl-code-lang');
+            if (cl) cl.textContent = 'java';
+          }
+          try {
+            if (lang && hljs.getLanguage(lang)) {
+              target.innerHTML = hljs.highlight(target.textContent, { language: lang, ignoreIllegals: true }).value;
+            } else {
+              var r = hljs.highlightAuto(target.textContent, ['java', 'xml', 'javascript', 'typescript', 'bash', 'json', 'yaml', 'groovy', 'properties', 'sql']);
+              if (r.relevance >= 6) {
+                target.innerHTML = r.value;
+                if (!pre.getAttribute('data-cl-lang')) {
+                  var l = pre.parentNode.querySelector('.cl-code-lang');
+                  if (l) l.textContent = r.language;
+                }
+              }
+            }
+            target.classList.add('hljs');
+          } catch (e) {}
+        });
+      });
+    });
+  }
+
+  /* ---------- Reading progress ---------- */
+  function progress() {
+    var art = doc.querySelector('.item-view .Blog .post-body');
+    if (!art) return;
+    var bar = el('div', 'cl-progress', '<span></span>');
+    bar.setAttribute('aria-hidden', 'true');
+    doc.body.appendChild(bar);
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = art.getBoundingClientRect();
+      var total = r.height - window.innerHeight * 0.6;
+      var v = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+      bar.style.setProperty('--p', v.toFixed(4));
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+
+  function init() {
+    var data = readYears();
+    totals(data);
+    renderTimeline(data);
+    enhanceArchiveRail(data);
+    decoratePosts(data);
+    yearMarks();
+    decorateCode();
+    progress();
+  }
+
+  if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<script>
+/* preview-only shim for what Blogger's indie script does */
+(function(){var b=document.body,s=document.querySelector('.sidebar-container');
+function tog(v){s.classList.toggle('sidebar-invisible',!v);b.classList.toggle('sidebar-visible',v);}
+var h=document.querySelector('.hamburger-menu');if(h)h.onclick=function(){tog(true)};
+document.querySelector('.sidebar-back').onclick=function(){tog(false)};
+var se=document.querySelector('.search-expand');se.onclick=function(){document.querySelector('.search').classList.add('focused');document.querySelector('.centered-top').classList.add('search-focused');document.querySelector('.search input').focus();};
+})();
+</script></body></html>

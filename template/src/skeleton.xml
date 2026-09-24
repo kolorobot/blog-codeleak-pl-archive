@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateUrl='indie.xml' b:templateVersion='1.3.0' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+  <head>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+    <meta content='light dark' name='color-scheme'/>
+    <meta content='#f3efe6' media='(prefers-color-scheme: light)' name='theme-color'/>
+    <meta content='#111113' media='(prefers-color-scheme: dark)' name='theme-color'/>
+    <title><data:view.title.escaped/></title>
+    <b:include data='blog' name='all-head-content'/>
+
+    <link href='https://fonts.googleapis.com' rel='preconnect'/>
+    <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect'/>
+    <link href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap' rel='stylesheet'/>
+
+    <b:skin version='1.3.0'><![CDATA[
+/*@@CSS@@*/
+]]></b:skin>
+
+    <b:template-skin>
+      <![CDATA[
+      body#layout .hidden,
+      body#layout .invisible { display: inherit; }
+      body#layout .navigation { display: none; }
+      body#layout .page,
+      body#layout .sidebar_top,
+      body#layout .sidebar_bottom { display: inline-block; left: inherit; position: relative; vertical-align: top; }
+      body#layout .page { float: right; margin-left: 20px; width: 55%; }
+      body#layout .sidebar-container { float: right; width: 40%; }
+      body#layout .hamburger-menu { display: none; }
+      ]]>
+    </b:template-skin>
+
+    <b:defaultmarkups>
+      <b:defaultmarkup type='Common'>
+        <b:includable id='widgetNotAvailableInPreview'>
+          <b:if cond='data:widget.type == &quot;AdSense&quot;'>
+            <div class='vertical-ad-placeholder'>
+              <span><b:message name='messages.adsGoHere'/></span>
+            </div>
+          <b:else/>
+            <b:include name='super.widgetNotAvailableInPreview'/>
+          </b:if>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='AdSense,Blog'>
+        <b:includable id='defaultAdUnit'>
+          <b:comment>Clear out style (needs to be a non-empty string)</b:comment>
+          <b:with value='&quot;/* Done in css. */&quot;' var='style'>
+            <b:include name='super.defaultAdUnit'/>
+          </b:with>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Blog,FeaturedPost'>
+        <b:includable id='headerByline'>
+          <b:include cond='data:view.isSingleItem and data:widgets.Blog.first.headerByline.items.share' data='{ shareButtonClass: &quot;post-share-buttons-top&quot;, overridden: true }' name='maybeAddShareButtons'/>
+          <b:include name='super.headerByline'/>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Blog,FeaturedPost,PopularPosts'>
+        <b:includable id='commentsLink'>
+          <a class='comment-link' expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+            <b:include data='{ iconClass: &quot;touch-icon&quot; }' name='commentIcon'/>
+            <span class='num_comments'>
+              <b:if cond='data:post.numberOfComments &gt; 0'>
+                <b:message name='messages.numberOfComments'>
+                  <b:param expr:value='data:post.numberOfComments' name='numComments'/>
+                </b:message>
+              <b:else/>
+                <data:messages.postAComment/>
+              </b:if>
+            </span>
+          </a>
+        </b:includable>
+        <b:includable id='snippetedPostByline'>
+          <b:include name='headerByline'/>
+        </b:includable>
+        <b:includable id='postLabels'>
+          <b:comment>Labels are shown on the record itself, not in lists.</b:comment>
+          <b:if cond='data:view.isSingleItem and data:widget.type == &quot;Blog&quot;'>
+            <b:include name='super.postLabels'/>
+          </b:if>
+        </b:includable>
+        <b:includable id='postShareButtons' var='post'>
+          <b:comment>We call super.postShareButtons from the migrated positions.</b:comment>
+        </b:includable>
+        <b:includable id='postJumpLink'>
+          <b:comment>Migrated to postFooterJumpLink.</b:comment>
+        </b:includable>
+        <b:includable id='postFooterJumpLink'>
+          <div class='jump-link'>
+            <a expr:href='data:post.url' expr:title='data:post.title'>Open record</a>
+          </div>
+        </b:includable>
+        <b:includable id='postFooter' var='post'>
+          <div class='post-bottom'>
+            <div class='post-footer float-container'>
+              <b:include name='footerBylines'/>
+              <b:include cond='data:widget.type == &quot;Blog&quot;' data='post' name='postFooterAuthorProfile'/>
+            </div>
+            <b:include cond='data:view.isSingleItem' data='{ shareButtonClass: &quot;post-share-buttons-bottom&quot;, overridden: true }' name='maybeAddShareButtons'/>
+          </div>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Blog'>
+        <b:includable id='main'>
+          <b:include name='noContentPlaceholder'/>
+          <b:comment>Cap the total number of ads (widgets and inline ads).</b:comment>
+          <b:with value='3' var='maxNumAds'>
+          <b:with value='data:widgets.AdSense.size' var='numDesktopAds'>
+          <b:with value='data:widgets.AdSense count (w =&gt; w.sectionId != &quot;ads&quot;)' var='numMobileAds'>
+          <b:comment>Filter out the featured post, but only on the homepage.</b:comment>
+          <b:with value='data:widgets.FeaturedPost filter (w =&gt; w.sectionId == &quot;page_body&quot;) map (w =&gt; w.postId)' var='featuredPostIds'>
+          <b:with value='data:view.isHomepage ? data:posts filter (post =&gt; post.id not in data:featuredPostIds) : data:posts' var='posts'>
+            <b:include name='super.main'/>
+          </b:with>
+          </b:with>
+          </b:with>
+          </b:with>
+          </b:with>
+        </b:includable>
+
+        <b:includable id='post' var='post'>
+          <div class='post' expr:data-cl-date='data:post.date.iso8601'>
+            <b:include data='post' name='postMeta'/>
+            <b:if cond='data:view.isPost'>
+              <b:comment>The record card: catalogue metadata for this entry.</b:comment>
+              <div class='cl-record'>
+                <dl class='cl-record-grid'>
+                  <div><dt>Record</dt><dd class='cl-recid'>CL</dd></div>
+                  <div><dt>Filed</dt><dd><time class='cl-date published' expr:datetime='data:post.date.iso8601'><data:post.date/></time></dd></div>
+                  <div><dt>Age</dt><dd><span class='cl-age'>&#8212;</span></dd></div>
+                </dl>
+                <div aria-hidden='true' class='cl-span'><span class='cl-span-from'>2011</span><i><b data-label=''/></i><span class='cl-span-to'>2023</span></div>
+              </div>
+              <b:include data='post' name='postTitle'/>
+              <b:include name='headerByline'/>
+              <aside class='cl-notice' role='note'>
+                <p class='cl-kicker'>Archival note</p>
+                <p>This is an archived record<span class='cl-notice-when'> from <b class='cl-month'>its original date</b>, written <span class='cl-age'>years</span> ago</span>, preserved exactly as published. <span class='cl-tier-text'>Versions, APIs and defaults may have moved on since &#8212; read it as context and verify before you copy.</span></p>
+              </aside>
+              <b:include data='post' name='postBody'/>
+              <p class='cl-endmark'><span>End of record <span class='cl-recid'/></span></p>
+              <b:include data='post' name='postFooter'/>
+              <nav class='cl-recnav'>
+                <b:if cond='data:newerPageUrl'>
+                  <a class='cl-newer' expr:href='data:newerPageUrl'>&#8592; Newer record</a>
+                </b:if>
+                <b:if cond='data:olderPageUrl'>
+                  <a class='cl-older' expr:href='data:olderPageUrl'>Older record &#8594;</a>
+                </b:if>
+              </nav>
+            <b:elseif cond='data:view.isSingleItem'/>
+              <b:include data='post' name='postTitle'/>
+              <b:include data='post' name='postBody'/>
+              <b:include data='post' name='postFooter'/>
+            <b:else/>
+              <div class='cl-entry'>
+                <div class='cl-entry-meta'>
+                  <span class='cl-recid'/>
+                  <time class='cl-date' expr:datetime='data:post.date.iso8601'><data:post.date/></time>
+                  <span class='cl-ago'/>
+                </div>
+                <div class='cl-entry-main'>
+                  <b:include data='post' name='postTitle'/>
+                  <b:include data='post' name='postBodySnippet'/>
+                  <b:include data='post' name='postFooterJumpLink'/>
+                </div>
+              </div>
+            </b:if>
+          </div>
+        </b:includable>
+
+        <b:includable id='postTitle' var='post'>
+          <a expr:name='data:post.id'/>
+          <b:if cond='data:post.title != &quot;&quot;'>
+            <b:if cond='data:view.isSingleItem'>
+              <h1 class='post-title entry-title'>
+                <b:if cond='data:post.link'>
+                  <a expr:href='data:post.link'><data:post.title/></a>
+                <b:else/>
+                  <data:post.title/>
+                </b:if>
+              </h1>
+            <b:else/>
+              <h3 class='post-title entry-title'>
+                <a expr:href='data:post.link ?: data:post.url'><data:post.title/></a>
+              </h3>
+            </b:if>
+          </b:if>
+        </b:includable>
+
+        <b:includable id='commentsTitle'>
+          <h3 class='title cl-comments-title'>Marginalia</h3>
+          <p class='cl-comments-note'>Reader comments, kept with the record.</p>
+        </b:includable>
+
+        <b:includable id='feedLinks'>
+          <b:comment>Don&#39;t show feed links.</b:comment>
+        </b:includable>
+        <b:includable id='postBodySnippet' var='post'>
+          <div class='container post-body entry-content' expr:id='&quot;post-snippet-&quot; + data:post.id'>
+            <b:include cond='data:post' data='post' name='postSnippet'/>
+          </div>
+        </b:includable>
+        <b:includable id='previousPageLink'>
+          <a class='blog-pager-newer-link' expr:href='data:newerPageUrl'>&#8592; Newer entries</a>
+        </b:includable>
+        <b:includable id='homePageLink'><b:comment>Don&#39;t show</b:comment></b:includable>
+        <b:includable id='nextPageLink'>
+          <a class='blog-pager-older-link' expr:href='data:olderPageUrl'>Older entries &#8594;</a>
+        </b:includable>
+        <b:includable id='inlineAd' var='post'>
+          <div>
+            <b:class cond='data:post.adNumber + data:numDesktopAds lt data:maxNumAds' name='desktop-ad'/>
+            <b:class cond='data:post.adNumber + data:numMobileAds lt data:maxNumAds' name='mobile-ad'/>
+            <b:include data='post' name='super.inlineAd'/>
+          </div>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='BlogArchive'>
+        <b:includable id='main' var='this'>
+          <details class='collapsible extendable' open='open'>
+            <b:with value='true' var='renderAsDetails'>
+            <b:with value='&quot;By year&quot;' var='defaultTitle'>
+              <b:include name='super.main'/>
+            </b:with>
+            </b:with>
+          </details>
+        </b:includable>
+        <b:includable id='flat'>
+          <b:include data='{ buttonClass: &quot;pill-button&quot;, items: data:this.data, itemSet: &quot;data&quot;, itemsMarkup: &quot;super.flat&quot; }' name='extendableItems'/>
+        </b:includable>
+        <b:includable id='hierarchy'>
+          <b:include data='{ buttonClass: &quot;pill-button&quot;, limit: 30, items: data:this.data, itemSet: &quot;data&quot;, itemsMarkup: &quot;super.hierarchy&quot; }' name='extendableItems'/>
+        </b:includable>
+        <b:includable id='interval' var='intervals'>
+          <ul class='hierarchy'>
+            <b:loop values='data:intervals' var='interval'>
+              <li class='archivedate'>
+                <div class='hierarchy-title'>
+                  <a class='post-count-link' expr:href='data:interval.url'>
+                    <data:interval.name/>
+                    <span class='post-count'><data:interval.post-count/></span>
+                  </a>
+                </div>
+                <div class='hierarchy-content'>
+                  <b:include cond='data:interval.data' data='interval.data' name='interval'/>
+                  <b:include cond='data:interval.posts' data='interval.posts' name='posts'/>
+                </div>
+              </li>
+            </b:loop>
+          </ul>
+        </b:includable>
+        <b:includable id='posts' var='posts'>
+          <ul class='posts hierarchy'>
+            <b:loop values='data:posts' var='post'>
+              <li>
+                <a expr:href='data:post.url'><data:post.title/></a>
+              </li>
+            </b:loop>
+          </ul>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='BlogSearch'>
+        <b:includable id='searchForm'>
+          <form expr:action='data:blog.searchUrl'>
+            <b:attr cond='not data:view.isPreview' name='target' value='_top'/>
+            <b:include name='urlParamsAsFormInput'/>
+            <div class='search-input'>
+              <input aria-label='Search the record' autocomplete='off' expr:value='data:view.isSearch ? data:view.search.query.escaped : &quot;&quot;' name='q' placeholder='Search the record&#8230;'/>
+            </div>
+            <b:include name='searchSubmit'/>
+          </form>
+        </b:includable>
+        <b:includable id='searchSubmit'>
+          <input class='search-action flat-button' expr:value='data:messages.search.escaped' type='submit'/>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Label'>
+        <b:includable id='main' var='this'>
+          <details class='collapsible extendable' open='open'>
+            <b:with value='true' var='renderAsDetails'>
+            <b:with value='&quot;Subjects&quot;' var='defaultTitle'>
+              <b:include name='super.main'/>
+            </b:with>
+            </b:with>
+          </details>
+        </b:includable>
+        <b:includable id='list'>
+          <b:include data='{ buttonClass: &quot;pill-button&quot;, items: data:this.labels, itemSet: &quot;labels&quot;, itemsMarkup: &quot;super.list&quot; }' name='extendableItems'/>
+        </b:includable>
+        <b:includable id='cloud'>
+          <b:include data='{ buttonClass: &quot;pill-button&quot;, items: data:this.labels, itemSet: &quot;labels&quot;, itemsMarkup: &quot;super.cloud&quot; }' name='extendableItems'/>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='FeaturedPost'>
+        <b:includable id='snippetedPostContent'>
+          <div class='cl-final' expr:data-cl-date='data:post.date.iso8601'>
+            <p class='cl-kicker'><span>Final entry</span> <span class='cl-recid'/> <time class='cl-date' expr:datetime='data:post.date.iso8601'><data:post.date/></time></p>
+            <b:include cond='data:this.postDisplay.showTitle' name='snippetedPostTitle'/>
+            <b:include cond='data:this.postDisplay.showFeaturedImage and data:post.featuredImage' data='post' name='snippetedPostThumbnail'/>
+            <b:include cond='data:this.postDisplay.showSnippet' data='post' name='postSnippet'/>
+            <b:include data='post' name='postFooterJumpLink'/>
+          </div>
+        </b:includable>
+        <b:includable id='snippetedPostThumbnail'>
+          <div class='snippet-thumbnail'>
+            <b:include data='{ image: data:post.featuredImage, imageSizes: [256, 512, 945, 1684], imageRatio: &quot;945:420&quot;, sourceSizes: &quot;(min-width: 954px) 880px, calc(100vw - 32px)&quot; }' name='responsiveImage'/>
+          </div>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Header'>
+        <b:includable id='image'>
+          <b:include name='super.image'/>
+          <b:include cond='data:this.imagePlacement == &quot;REPLACE&quot;' name='title'/>
+        </b:includable>
+        <b:includable id='title'>
+          <div>
+            <b:class cond='data:this.imagePlacement == &quot;REPLACE&quot;' name='replaced'/>
+            <b:include name='super.title'/>
+          </div>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='PopularPosts'>
+        <b:includable id='main' var='this'>
+          <b:with value='&quot;Most consulted records&quot;' var='defaultTitle'>
+            <b:include name='super.main'/>
+          </b:with>
+        </b:includable>
+        <b:includable id='snippetedPostContent'>
+          <div class='cl-pop' expr:data-cl-date='data:post.date.iso8601'>
+            <p class='cl-pop-meta'><span class='cl-recid'/> &#183; <span class='cl-ago'/></p>
+            <b:include name='snippetedPostTitle'/>
+            <div class='item-content float-container'>
+              <b:if cond='data:this.postDisplay.showSnippet'>
+                <b:with value='&quot;popular-posts&quot;' var='snippetPrefix'>
+                  <b:include cond='data:post' data='post' name='postSnippet'/>
+                </b:with>
+              </b:if>
+              <b:include data='post' name='postFooterJumpLink'/>
+            </div>
+          </div>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='PageList'>
+        <b:includable id='content'>
+          <div class='widget-content'>
+            <b:include cond='data:widget.sectionId == &quot;page_list_top&quot;' name='overflowablePageList'/>
+            <b:include cond='data:widget.sectionId != &quot;page_list_top&quot;' name='pageList'/>
+          </div>
+        </b:includable>
+        <b:includable id='overflowButton'>
+          <a><data:messages.moreEllipsis/></a>
+        </b:includable>
+      </b:defaultmarkup>
+
+      <b:defaultmarkup type='Profile'>
+        <b:includable id='main' var='this'>
+          <div class='wrapper'>
+            <b:class cond='!data:this.team' name='solo'/>
+            <b:with value='data:messages.blogAuthors' var='defaultTitle'>
+              <b:include cond='data:this.team' name='widget-title'/>
+            </b:with>
+            <b:include name='content'/>
+          </div>
+        </b:includable>
+        <b:includable id='defaultProfileImage'>
+          <div class='default-avatar-wrapper'>
+            <b:include data='{ iconClass: &quot;avatar-icon&quot; }' name='defaultAvatarIcon'/>
+          </div>
+        </b:includable>
+        <b:includable id='userProfileText'>
+          <dd class='profile-textblock profile-snippet snippet-container r-snippet-container'>
+            <div class='snippet-item r-snippetized'>
+              <data:aboutme/>
+            </div>
+            <div class='snippet-fade r-snippet-fade hidden'/>
+          </dd>
+        </b:includable>
+        <b:includable id='viewProfileLink'>
+          <a class='profile-link visit-profile pill-button' expr:href='data:userUrl' rel='author'>
+            <data:messages.visitProfile/>
+          </a>
+        </b:includable>
+      </b:defaultmarkup>
+    </b:defaultmarkups>
+
+    <b:if cond='data:widgets.AdSense.first or data:blog.adsenseClientId'>
+      <script async='async' src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'/>
+    </b:if>
+    <b:include data='blog' name='google-analytics'/>
+
+    <script async='async' src='https://www.gstatic.com/external_hosted/clipboardjs/clipboard.min.js'/>
+  </head>
+
+  <body>
+    <b:class cond='data:view.isPreview' name='preview'/>
+    <b:class cond='data:view.isSingleItem' name='item-view'/>
+    <b:class cond='data:view.isPage' name='page-view'/>
+    <b:class cond='data:view.isHomepage' name='home-view'/>
+    <b:class cond='data:view.isArchive' name='archive-view'/>
+    <b:class cond='data:view.isLabelSearch' name='label-view'/>
+    <b:class cond='data:view.isSearch and !data:view.isLabelSearch' name='search-view'/>
+    <b:class cond='data:blog.pageType == &quot;error_page&quot;' name='error-view'/>
+    <b:class name='version-1-3-0'/>
+
+    <b:include name='skipNavigation'/>
+
+    <div class='cl-status' role='note'>
+      <div class='cl-status-in'>
+        <span aria-hidden='true' class='cl-status-dot'/>
+        <strong>Archived</strong>
+        <span aria-hidden='true' class='cl-status-sep'>/</span>
+        <span class='cl-status-text'>Read-only technical record, <span data-cl-range=''>2011&#8211;2023</span></span>
+        <span class='cl-status-meta'>Archived Sep 2026</span>
+      </div>
+    </div>
+
+    <div class='cl-shell'>
+    <div class='page'>
+      <b:with value='data:widgets.AdSense any (w =&gt; w.sectionId == &quot;ads&quot;)' var='hasVerticalAds'>
+        <div class='page_body'>
+          <b:class cond='data:hasVerticalAds' name='has-vertical-ads'/>
+
+          <div class='centered'>
+            <div class='centered-top-placeholder'/>
+            <header class='centered-top-container' role='banner'>
+              <div class='centered-top'>
+                <b:class cond='data:view.isSearch and data:view.search.query' name='search-focused'/>
+
+                <b:if cond='data:view.isSingleItem'>
+                  <a aria-label='Back to the record' class='return_link' expr:href='data:blog.homepageUrl'>
+                    <b:include data='{ button: true, iconClass: &quot;back-button rtl-reversible-icon flat-icon-button ripple&quot; }' name='backArrowIcon'/>
+                  </a>
+                <b:else/>
+                  <b:include data='{ button: true, iconClass: &quot;hamburger-menu flat-icon-button ripple&quot; }' name='menuIcon'/>
+                </b:if>
+
+                <b:if cond='data:view.isLayoutMode or data:widgets any (w =&gt; w.sectionId == &quot;search_top&quot;)'>
+                  <div class='search'>
+                    <b:class cond='data:view.isSearch and data:view.search.query' name='focused'/>
+                    <button class='search-expand touch-icon-button' expr:aria-label='data:messages.search.escaped'>
+                      <div class='flat-icon-button ripple'>
+                        <b:include data='{ iconClass: &quot;search-expand-icon&quot; }' name='searchIcon'/>
+                      </div>
+                    </button>
+                    <b:section id='search_top' name='Search (Top)' showaddelement='false'>
+                      <b:widget id='BlogSearch1' locked='true' title='Search This Blog' type='BlogSearch' visible='true'/>
+                    </b:section>
+                  </div>
+                </b:if>
+
+                <div class='clearboth'/>
+
+                <div class='blog-name container'>
+                  <b:section class='container' id='header' name='Header' showaddelement='false'>
+                    <b:widget id='Header1' locked='true' title='blog.codeleak.pl (Header)' type='Header' visible='true'>
+                      <b:widget-settings>
+                        <b:widget-setting name='displayUrl'/>
+                        <b:widget-setting name='displayHeight'>0</b:widget-setting>
+                        <b:widget-setting name='sectionWidth'>-1</b:widget-setting>
+                        <b:widget-setting name='useImage'>false</b:widget-setting>
+                        <b:widget-setting name='shrinkToFit'>false</b:widget-setting>
+                        <b:widget-setting name='imagePlacement'>BEHIND</b:widget-setting>
+                        <b:widget-setting name='displayWidth'>0</b:widget-setting>
+                      </b:widget-settings>
+                    </b:widget>
+                  </b:section>
+                  <b:if cond='data:view.isLayoutMode or data:widgets any (w =&gt; w.sectionId == &quot;subscription&quot;)'>
+                    <section class='subscribe-section-container'>
+                      <button class='subscribe-button pill-button'><b:eval expr='data:messages.subscribe'/></button>
+                      <div class='subscribe-popup-container'>
+                        <div aria-labelledby='subscribe-title' class='subscribe-popup dialog hidden' role='dialog' tabindex='-1'>
+                          <div role='document'>
+                            <h3 class='subscribe-title' id='subscribe-title'><b:eval expr='data:messages.subscribeToThisBlog'/></h3>
+                            <b:section id='subscription' name='Subscription' showaddelement='false'/>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </b:if>
+                  <nav role='navigation'>
+                    <b:section class='clearboth' id='page_list_top' name='Page List (Top)' showaddelement='false'>
+                      <b:widget cond='!data:view.isPost' id='PageList1' locked='true' title='' type='PageList' visible='true'>
+                        <b:widget-settings>
+                          <b:widget-setting name='pageListJson'><![CDATA[{"link0":{"href":"https://blog.codeleak.pl/","position":0,"title":"Home"},"4584578564261837603":{"href":"https://blog.codeleak.pl/p/author.html","position":1,"title":"About Me"}}]]></b:widget-setting>
+                          <b:widget-setting name='homeTitle'>Home</b:widget-setting>
+                        </b:widget-settings>
+                      </b:widget>
+                    </b:section>
+                  </nav>
+                </div>
+              </div>
+            </header>
+
+            <b:if cond='data:view.isHomepage'>
+              <section aria-labelledby='cl-hero-title' class='cl-hero'>
+                <p class='cl-kicker'>Public technical record &#183; <span data-cl-range=''>2011&#8211;2023</span></p>
+                <h2 class='cl-hero-title' id='cl-hero-title'>Twelve years of notes on Java, Spring &amp; testing &#8212; <em>kept exactly as they were written.</em></h2>
+                <p class='cl-hero-lede'>blog.codeleak.pl is closed for new entries. What remains is a record: <b><span data-cl-total=''>143</span> posts</b> on Java, Spring, testing and developer tooling, each preserved as published &#8212; with the versions, habits and opinions of its time. Read them as history of how things were done, not as current advice.</p>
+                <div class='cl-tl-wrap'>
+                  <div class='cl-tl-caption'><span>Entries per year</span><span>2018 and 2022: no entries</span></div>
+                  <div id='cl-timeline'/>
+                </div>
+              </section>
+            </b:if>
+
+            <div class='cl-body'>
+              <b:section ads='true' class='vertical-ad-container' id='ads' name='Ads' showaddelement='false'>
+                <b:widget id='AdSense1' locked='true' title='' type='AdSense' visible='false'>
+                  <b:widget-settings>
+                    <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+                    <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+                  </b:widget-settings>
+                </b:widget>
+                <b:widget id='AdSense2' locked='true' title='' type='AdSense' visible='false'>
+                  <b:widget-settings>
+                    <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+                    <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+                    <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+                  </b:widget-settings>
+                </b:widget>
+              </b:section>
+
+              <main class='centered-bottom' id='main' role='main' tabindex='-1'>
+                <b:if cond='data:view.isMultipleItems'>
+                  <h2 class='main-heading'>Entries</h2>
+                </b:if>
+
+                <b:if cond='data:blog.pageType == &quot;error_page&quot;'>
+                  <section class='cl-404'>
+                    <p class='cl-kicker'>Error 404 &#183; Record not found</p>
+                    <h2>This address is not in the record.</h2>
+                    <p>The archive is closed and complete &#8212; nothing new is added and nothing is taken away. The page you were looking for may have been renamed. Search the record above, or browse the index by year and subject.</p>
+                    <a expr:href='data:blog.homepageUrl'>Back to the record &#8594;</a>
+                  </section>
+                </b:if>
+
+                <b:if cond='data:view.isArchive or (data:view.isSearch and data:view.search.resultsMessageHtml)'>
+                  <div class='post-filter-message'>
+                    <div>
+                      <b:if cond='data:view.isArchive'>
+                        <data:view.archive.rangeMessage/>
+                      <b:elseif cond='data:view.isSearch and data:view.search.resultsMessageHtml'/>
+                        <data:view.search.resultsMessageHtml/>
+                      </b:if>
+                    </div>
+                    <div>
+                      <a expr:href='data:blog.homepageUrl'>Clear query &#215;</a>
+                    </div>
+                  </div>
+                </b:if>
+
+                <b:section class='main' id='page_body' name='Page Body' showaddelement='false'>
+                  <b:widget cond='data:view.isHomepage' id='FeaturedPost1' locked='true' title='' type='FeaturedPost' visible='true'>
+                    <b:widget-settings>
+                      <b:widget-setting name='showSnippet'>true</b:widget-setting>
+                      <b:widget-setting name='showPostTitle'>true</b:widget-setting>
+                      <b:widget-setting name='postId'>5937068985373045361</b:widget-setting>
+                      <b:widget-setting name='showFirstImage'>false</b:widget-setting>
+                      <b:widget-setting name='useMostRecentPost'>true</b:widget-setting>
+                    </b:widget-settings>
+                  </b:widget>
+                  <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' visible='true'>
+                    <b:widget-settings>
+                      <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+                      <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+                      <b:widget-setting name='showShareButtons'>true</b:widget-setting>
+                      <b:widget-setting name='showCommentLink'>false</b:widget-setting>
+                      <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+                      <b:widget-setting name='showAuthor'>true</b:widget-setting>
+                      <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+                      <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+                      <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+                      <b:widget-setting name='timestampLabel'>-</b:widget-setting>
+                      <b:widget-setting name='reactionsLabel'/>
+                      <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
+                      <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+                      <b:widget-setting name='showLabels'>true</b:widget-setting>
+                      <b:widget-setting name='showLocation'>true</b:widget-setting>
+                      <b:widget-setting name='postLabelsLabel'/>
+                      <b:widget-setting name='showTimestamp'>false</b:widget-setting>
+                      <b:widget-setting name='postsPerAd'>1</b:widget-setting>
+                      <b:widget-setting name='showBacklinks'>false</b:widget-setting>
+                      <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+                      <b:widget-setting name='showInlineAds'>false</b:widget-setting>
+                      <b:widget-setting name='showReactions'>false</b:widget-setting>
+                    </b:widget-settings>
+                  </b:widget>
+                  <b:widget cond='data:view.isSingleItem and data:posts any (p =&gt; p.id != data:view.postId)' id='PopularPosts1' locked='true' title='' type='PopularPosts' visible='true'>
+                    <b:widget-settings>
+                      <b:widget-setting name='numItemsToShow'>3</b:widget-setting>
+                      <b:widget-setting name='showThumbnails'>true</b:widget-setting>
+                      <b:widget-setting name='showSnippets'>true</b:widget-setting>
+                      <b:widget-setting name='timeRange'>LAST_YEAR</b:widget-setting>
+                    </b:widget-settings>
+                  </b:widget>
+                </b:section>
+              </main>
+            </div>
+
+            <div class='cl-foot'>
+              <div class='cl-colophon'>
+                <p class='cl-kicker'>Colophon</p>
+                <p class='cl-colophon-lede'><strong>blog.codeleak.pl</strong> is a public technical record on Java, Spring, testing and developer tooling, written by Rafał Borowiec.</p>
+                <p class='cl-colophon-body'>The last entry was published in February 2023; the blog was archived in September 2026. Entries stay online as they were published &#8212; no rewrites, no silent updates. The older a record, the more its paper has yellowed.</p>
+                <dl class='cl-facts'>
+                  <div><dt>First entry</dt><dd>Mar 2011</dd></div>
+                  <div><dt>Last entry</dt><dd>Feb 2023</dd></div>
+                  <div><dt>Entries</dt><dd data-cl-total=''>143</dd></div>
+                  <div><dt>Archived</dt><dd class='cl-closed'>Sep 2026</dd></div>
+                </dl>
+                <p class='cl-colophon-end'>&#8212; End of record &#8212;</p>
+              </div>
+              <b:section class='footer' id='footer' name='Footer' showaddelement='false' tag='footer'>
+                <b:widget id='Attribution1' locked='true' title='' type='Attribution' visible='true'>
+                  <b:widget-settings>
+                    <b:widget-setting name='copyright'/>
+                  </b:widget-settings>
+                </b:widget>
+              </b:section>
+            </div>
+          </div>
+        </div>
+      </b:with>
+    </div>
+
+    <aside class='sidebar-container container sidebar-invisible' role='complementary'>
+      <div class='navigation'>
+        <b:include data='{ button: true, iconClass: &quot;flat-icon-button ripple sidebar-back&quot; }' name='backArrowIcon'/>
+      </div>
+      <div class='cl-rail-head'>
+        <p class='cl-kicker'>Index</p>
+        <p class='cl-rail-lede'>Every entry in the record, by year and by subject.</p>
+      </div>
+      <div class='sidebar_top_wrapper'>
+        <b:class cond='data:widgets none w =&gt; w.sectionId == &quot;sidebar_top&quot;' name='no-items'/>
+        <b:section class='sidebar_top' id='sidebar_top' name='Sidebar (Top)'>
+          <b:widget id='Profile1' locked='true' title='Contributors' type='Profile' visible='false'>
+            <b:widget-settings>
+              <b:widget-setting name='showaboutme'>true</b:widget-setting>
+              <b:widget-setting name='showlocation'>false</b:widget-setting>
+            </b:widget-settings>
+          </b:widget>
+        </b:section>
+      </div>
+      <b:section class='sidebar_bottom' id='sidebar_bottom' name='Sidebar (Bottom)' preferred='yes'>
+        <b:widget id='BlogArchive1' locked='false' title='' type='BlogArchive' visible='true'>
+          <b:widget-settings>
+            <b:widget-setting name='showStyle'>HIERARCHY</b:widget-setting>
+            <b:widget-setting name='yearPattern'>yyyy</b:widget-setting>
+            <b:widget-setting name='showWeekEnd'>true</b:widget-setting>
+            <b:widget-setting name='monthPattern'>MMMM</b:widget-setting>
+            <b:widget-setting name='dayPattern'>MMM dd</b:widget-setting>
+            <b:widget-setting name='weekPattern'>MM/dd</b:widget-setting>
+            <b:widget-setting name='chronological'>false</b:widget-setting>
+            <b:widget-setting name='showPosts'>false</b:widget-setting>
+            <b:widget-setting name='frequency'>MONTHLY</b:widget-setting>
+          </b:widget-settings>
+        </b:widget>
+        <b:widget id='Label1' locked='false' title='Labels' type='Label' visible='true'>
+          <b:widget-settings>
+            <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+            <b:widget-setting name='display'>CLOUD</b:widget-setting>
+            <b:widget-setting name='selectedLabelsList'/>
+            <b:widget-setting name='showType'>ALL</b:widget-setting>
+            <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+          </b:widget-settings>
+        </b:widget>
+        <b:widget id='ReportAbuse1' locked='true' title='' type='ReportAbuse' visible='false'/>
+        <b:widget id='Subscribe1' locked='false' title='Subscribe' type='Subscribe' visible='false'/>
+        <b:widget id='HTML1' locked='false' title='' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<div class="separator" style="clear: both; text-align: center;"><a href="http://www.baeldung.com/rest-with-spring-course?utm_source=codeleak&utm_medium=web&utm_campaign=rws&affcode=22136_1447974082a9c3" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmnMydXrfoQQnztz2fx3fMOcYLdPzExHNDSbU6MQm21CeJ5K6iWi1rI3qfHFgpwn0Y8h9tyBBmwbP5CN5tIdTP5MSlwCmxMDmAtjEC95uZ1_qWb1vf37yV1qY9VgxjALA_pjU52gwHx4xr/s1600/baeldung-general-ads-spring-2.1.0-336x280-%25401x.jpg" data-original-width="336" data-original-height="280" /></a></div>]]></b:widget-setting>
+          </b:widget-settings>
+        </b:widget>
+        <b:widget id='HTML2' locked='false' title='' type='HTML' visible='false'>
+          <b:widget-settings>
+            <b:widget-setting name='content'><![CDATA[<a href="https://twitter.com/kolorobot" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @kolorobot</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>]]></b:widget-setting>
+          </b:widget-settings>
+        </b:widget>
+      </b:section>
+      <div class='cl-rail-foot'>
+        <p class='cl-kicker'>Author</p>
+        <p>Rafał Borowiec</p>
+        <p><a href='https://blog.codeleak.pl/p/author.html'>About</a> &#183; <a href='https://x.com/kolorobot' rel='me noopener'>@kolorobot on X</a></p>
+      </div>
+    </aside>
+    </div>
+
+    <script type='text/javascript'>
+//<![CDATA[
+//@@JS@@
+//]]>
+    </script>
+    <b:template-script async='true' name='indie' version='1.0.0'/>
+  </body>
+</html>

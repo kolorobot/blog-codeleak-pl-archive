@@ -209,9 +209,25 @@ def archive(entry, force=False):
     return url, post_dir, "ok"
 
 
+TEMPLATE_SECTION = """
+## Blog template
+
+[`template/`](template/) holds the Blogger theme ("The Record") the blog uses since it was archived:
+
+- `src/` – `skeleton.xml`, `theme.css`, `archive.js` (plus `template.old.xml`, the previous theme)
+- `build.py` – assembles `codeleak-the-record.xml` (paste into Blogger → Theme → Edit HTML) and static previews
+- `data/feed.json` – feed snapshot used for the previews; `preview/` – rendered `home.html` / `post.html`
+
+```bash
+cd template && python3 build.py data/feed.json
+python3 -m http.server 8765 --directory preview
+```"""
+
+
 def write_index(entries):
     lines = ["# blog.codeleak.pl — archive", "",
-             f"{len(entries)} posts archived from <{BLOG}> as Markdown with local images.", ""]
+             f"{len(entries)} posts archived from <{BLOG}> as Markdown with local images.", "",
+             TEMPLATE_SECTION]
     year = None
     for e in sorted(entries, key=lambda e: e["published"]["$t"], reverse=True):
         url = next(l["href"] for l in e["link"] if l["rel"] == "alternate")
