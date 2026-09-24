@@ -1,6 +1,11 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = []
+# ///
 """Assemble the Blogger template and static previews from src/.
 
-  python3 build.py [data/feed.json]
+  uv run template/build.py [template/data/feed.json]
 
 data/feed.json is a snapshot of https://blog.codeleak.pl/feeds/posts/default?alt=json&max-results=500
 (used only for the previews).

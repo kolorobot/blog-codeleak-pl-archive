@@ -3,6 +3,17 @@
 144 posts archived from <https://blog.codeleak.pl> as Markdown with local images.
 
 
+## Usage
+
+Everything runs through [uv](https://docs.astral.sh/uv/); dependencies are declared inline
+in the scripts, nothing is installed globally.
+
+```bash
+uv run archive.py                         # archive new posts (existing ones are skipped)
+uv run archive.py --force                 # regenerate everything
+uv run archive.py --force <url-fragment>  # regenerate selected posts
+```
+
 ## Blog template
 
 [`template/`](template/) holds the Blogger theme ("The Record") the blog uses since it was archived:
@@ -12,8 +23,8 @@
 - `data/feed.json` – feed snapshot used for the previews; `preview/` – rendered `home.html` / `post.html`
 
 ```bash
-cd template && python3 build.py data/feed.json
-python3 -m http.server 8765 --directory preview
+uv run template/build.py template/data/feed.json
+uv run python -m http.server 8765 --directory template/preview
 ```
 
 ## 2026
