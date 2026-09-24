@@ -28,7 +28,7 @@ IMAGE_HOSTS = ("googleusercontent.com", "bp.blogspot.com", "blogger.com",
                "storage.googleapis.com", "drive.google.com")
 
 session = requests.Session()
-session.headers["User-Agent"] = "codeleak-blog-archive/1.0"
+session.headers["User-Agent"] = "blog-codeleak-pl-archive/1.0"
 
 
 def get(url, **kw):
