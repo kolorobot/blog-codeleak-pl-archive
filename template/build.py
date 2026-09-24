@@ -6,7 +6,7 @@ data/feed.json is a snapshot of https://blog.codeleak.pl/feeds/posts/default?alt
 (used only for the previews).
 
 Outputs:
-  codeleak-the-record.xml   – paste into Blogger → Theme → Edit HTML
+  build/template.xml        – import into Blogger (instructions printed on build)
   preview/home.html, preview/post.html – static approximations for review
 """
 import html
@@ -27,9 +27,19 @@ assert "$(" not in css, "Blogger skin would treat $( as a variable"
 
 tpl = (SRC / "skeleton.xml").read_text()
 out = tpl.replace("/*@@CSS@@*/", css).replace("//@@JS@@", js)
-(ROOT / "codeleak-the-record.xml").write_text(out)
+BUILD = ROOT / "build"
+BUILD.mkdir(exist_ok=True)
+target = BUILD / "template.xml"
+target.write_text(out)
 xml.dom.minidom.parseString(out.encode("utf-8"))  # well-formedness check
-print("template OK:", len(out), "bytes")
+print(f"""template OK: {len(out)} bytes
+  -> {target.resolve()}
+
+Import into Blogger:
+  1. blogger.com -> Theme -> (arrow next to Customize) -> Backup  (download the current theme first)
+  2. Theme -> (arrow next to Customize) -> Restore -> Upload -> {target.name}
+     or: Theme -> (arrow) -> Edit HTML -> replace everything with the file contents -> Save
+""")
 
 # ---------------------------------------------------------------- previews
 if len(sys.argv) < 2:

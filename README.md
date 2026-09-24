@@ -8,7 +8,7 @@
 [`template/`](template/) holds the Blogger theme ("The Record") the blog uses since it was archived:
 
 - `src/` – `skeleton.xml`, `theme.css`, `archive.js` (plus `template.old.xml`, the previous theme)
-- `build.py` – assembles `codeleak-the-record.xml` (paste into Blogger → Theme → Edit HTML) and static previews
+- `build.py` – assembles `build/template.xml` (git-ignored; the script prints how to import it into Blogger) and static previews
 - `data/feed.json` – feed snapshot used for the previews; `preview/` – rendered `home.html` / `post.html`
 
 ```bash
