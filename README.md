@@ -1,7 +1,11 @@
 # blog.codeleak.pl — archive
 
-143 posts archived from <https://blog.codeleak.pl> as Markdown with local images.
+144 posts archived from <https://blog.codeleak.pl> as Markdown with local images.
 
+
+## 2026
+
+- 2026-09-24 [Codeleak.pl Archived](posts/2026/09/codeleakpl-archived/index.md)
 
 ## 2023
 
